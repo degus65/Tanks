@@ -3,7 +3,7 @@ import java.awt.image.BufferedImage;
 
 
 public class Player {
-	private int x=400, y=400, vX=0, vY=0;
+	private int x=301, y=400, vX=0, vY=0;
 	private static final int PLAYER_SPEED = 4;
 	String sciezka;
 	SpriteCache sprite=new SpriteCache();
