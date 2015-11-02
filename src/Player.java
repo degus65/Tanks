@@ -17,6 +17,22 @@ public class Player {
 	public void act() {
 		x+=vX;
 		y+=vY;
+		
+		// KOLIZJE Z RAMKA ~MATIUS
+		if(x < 0 ){
+			x = 0;
+		}
+		if(y < 0 ){
+			y = 0;
+		}
+		if(x > 603)
+		{
+			x = 603;
+		}
+		if(y > 423)
+		{
+			y = 423;
+		}
 	}
 	
 	protected void updateSpeed()

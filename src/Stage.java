@@ -16,8 +16,12 @@ import javax.swing.border.EmptyBorder;
 
 public class Stage extends JPanel implements KeyListener, ActionListener {
 	
-	public static final int SZEROKOSC = 700;
-	public static final int WYSOKOSC = 500;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	public static final int SZEROKOSC = 640;
+	public static final int WYSOKOSC = 480;
 	public long usedTime=0;
 	
 	Player p1=new Player("playerUp.png");
