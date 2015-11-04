@@ -1,7 +1,6 @@
 import java.awt.EventQueue;
+
 import javax.swing.JFrame;
-
-
 
 public class Game_frame extends JFrame {
 
@@ -10,6 +9,7 @@ public class Game_frame extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 	private Stage contentPane;
+
 	/**
 	 * Launch the application.
 	 */
@@ -32,14 +32,12 @@ public class Game_frame extends JFrame {
 	 */
 	public Game_frame() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		//setBounds(100, 100, 800, 500);
+		// setBounds(100, 100, 800, 500);
 		setSize(Stage.SZEROKOSC, Stage.WYSOKOSC);
 		setResizable(false);
 		contentPane = new Stage();
 		add(contentPane);
-		
-		
+
 	}
-	
 
 }
