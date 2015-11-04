@@ -31,6 +31,7 @@ public class Stage extends JPanel implements KeyListener, ActionListener {
 	private String background = "/img/background.png";	//sciezka do tla
 	
 	Player p1=new Player("playerUp.png");
+	Player2 p2 = new Player2("tank.png");
 	
 	
 	public void paintComponent(Graphics g)
@@ -42,6 +43,8 @@ public class Stage extends JPanel implements KeyListener, ActionListener {
 //		g.setColor(Color.BLACK);
 //		g.fillRect(0, 0, getWidth(), getHeight());
 		g.drawImage(p1.getSprite(), p1.getX(), p1.getY(),this);
+		g.drawImage(p2.getSprite(), p2.getX(), p2.getY(),this); //rysuj drugiego gracza
+		
 		g.setColor(Color.WHITE);
 		if (usedTime > 0)
 			g.drawString(String.valueOf(1000/usedTime)+" fps",5,WYSOKOSC-50);
@@ -53,6 +56,7 @@ public class Stage extends JPanel implements KeyListener, ActionListener {
 	public void updateWorld()
 	{
 		p1.act();
+		p2.act(); //drugi gracz
 	}
 	
 	public void gameLoop()
@@ -73,11 +77,13 @@ public class Stage extends JPanel implements KeyListener, ActionListener {
 	public void keyPressed(KeyEvent k) {
 		// TODO Auto-generated method stub
 		p1.keyPressed(k);
+		p2.keyPressed(k);
 	}
 	@Override
 	public void keyReleased(KeyEvent k) {
 		// TODO Auto-generated method stub
 		p1.keyReleased(k);
+		p2.keyReleased(k);
 	}
 	@Override
 	public void keyTyped(KeyEvent arg0) {

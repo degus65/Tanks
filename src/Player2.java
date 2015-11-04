@@ -1,20 +1,24 @@
-import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 
+public class Player2 {
 
-public class Player {
-	private int x=301, y=400, vX=0, vY=0;
-	private static final int PLAYER_SPEED = 4;
+	private int x=301, y=50, vX=0, vY=0;
+	private static final int PLAYER2_SPEED = 3;
 	String sciezka;
 	SpriteCache sprite=new SpriteCache();
 	private boolean up=false, down=false, left=false, right=false;
 	
-
-	Player(String sciezka)
-	{
-		this.sciezka=sciezka;
-	}
+	
+		Player2(String sciezka) {
+			this.sciezka= sciezka;
+			// TODO Auto-generated constructor stub
+		}
+	
+//	Player2(String sciezka)
+//	{
+//		this.sciezka=sciezka;
+//	}
 	
 	public void act() {
 		x+=vX;
@@ -43,50 +47,48 @@ public class Player {
 		vY=0;
 		if (down)
 		{
-			vY = PLAYER_SPEED;
-			this.sciezka="playerDown.png";
+			vY = PLAYER2_SPEED;
+			this.sciezka="tank.png";
 		}
 		if (up) 
 		{
-			vY = -PLAYER_SPEED;
-			this.sciezka="playerUp.png";
+			vY = -PLAYER2_SPEED;
+			this.sciezka="tank.png";
 		}
 		if (left) 
 		{
-			vX = -PLAYER_SPEED;
-			this.sciezka="playerLeft.png";
+			vX = -PLAYER2_SPEED;
+			this.sciezka="tank.png";
 		}
 		if (right) 
 		{
-			vX = PLAYER_SPEED;
-			this.sciezka="playerRight.png";
+			vX = PLAYER2_SPEED;
+			this.sciezka="tank.png";
 		}
-		
-//		Collision();
 	}
 
 	public void keyPressed(KeyEvent k) 
 	{
-		if(k.getKeyCode()==KeyEvent.VK_RIGHT)
+		if(k.getKeyCode()==KeyEvent.VK_D)
 			right=true;
-		if(k.getKeyCode()==KeyEvent.VK_LEFT)
+		if(k.getKeyCode()==KeyEvent.VK_A)
 			left=true;
-		if(k.getKeyCode()==KeyEvent.VK_UP)
+		if(k.getKeyCode()==KeyEvent.VK_W)
 			up=true;
-		if(k.getKeyCode()==KeyEvent.VK_DOWN)
+		if(k.getKeyCode()==KeyEvent.VK_S)
 			down=true;
 		updateSpeed();
 	}
 	
 	public void keyReleased(KeyEvent k)
 	{
-		if(k.getKeyCode()==KeyEvent.VK_RIGHT)
+		if(k.getKeyCode()==KeyEvent.VK_D)
 			right=false;
-		if(k.getKeyCode()==KeyEvent.VK_LEFT)
+		if(k.getKeyCode()==KeyEvent.VK_A)
 			left=false;
-		if(k.getKeyCode()==KeyEvent.VK_UP)
+		if(k.getKeyCode()==KeyEvent.VK_W)
 			up=false;
-		if(k.getKeyCode()==KeyEvent.VK_DOWN)
+		if(k.getKeyCode()==KeyEvent.VK_S)
 			down=false;
 		updateSpeed();
 	}
@@ -109,6 +111,5 @@ public class Player {
 	{
 		this.sciezka=sciezka;
 	}
-	
 	
 }
