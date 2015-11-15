@@ -7,11 +7,13 @@ import javax.imageio.ImageIO;
 public class SpriteCache {
 	public HashMap<String, BufferedImage> sprites;
 
-	public SpriteCache() {
-		sprites = new HashMap<String, BufferedImage>();
+	public SpriteCache()
+	{
+		sprites=new HashMap<String, BufferedImage>();
 	}
 
-	private BufferedImage loadImage(String sciezka) {
+	private BufferedImage loadImage(String sciezka) 
+	{
 		URL url = null;
 		try {
 			url = getClass().getClassLoader().getResource(sciezka);
@@ -25,10 +27,11 @@ public class SpriteCache {
 		}
 	}
 
-	public BufferedImage getSprite(String sciezka) {
-		BufferedImage img = (BufferedImage) sprites.get(sciezka);
-		if (img == null) {
-			img = loadImage("img/" + sciezka);
+	public BufferedImage getSprite(String sciezka) 
+	{
+		BufferedImage img=(BufferedImage) sprites.get(sciezka);
+		if (img==null) {
+			img=loadImage("img/" + sciezka);
 			sprites.put(sciezka, img);
 		}
 		return img;

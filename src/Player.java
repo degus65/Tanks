@@ -1,18 +1,15 @@
 import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-public class Player {
-	private int x = 301, y = 400, vX = 0, vY = 0;
+public class Player extends Sprite {
 	private static final int PLAYER_SPEED = 4;
-	private String sciezka;
-	private SpriteCache sprite = new SpriteCache();
 	private boolean up = false, down = false, left = false, right = false;
 	private ArrayList<Missile> missiles=new ArrayList<Missile>();
 	Direction direction=Direction.UP;
 
 	Player(String sciezka) {
-		this.sciezka = sciezka;
+		super(sciezka);
+		x=301; y=400; vX=0; vY=0;
 	}
 
 	public void act() {
@@ -50,22 +47,22 @@ public class Player {
 		vY = 0;
 		if (down) {
 			vY = PLAYER_SPEED;
-			this.sciezka = "playerDown.png";
+			this.setSciezka("playerDown.png");
 			direction=Direction.DOWN;
 		}
 		if (up) {
 			vY = -PLAYER_SPEED;
-			this.sciezka = "playerUp.png";
+			this.setSciezka("playerUp.png");
 			direction=Direction.UP;
 		}
 		if (left) {
 			vX = -PLAYER_SPEED;
-			this.sciezka = "playerLeft.png";
+			this.setSciezka("playerLeft.png");
 			direction=Direction.LEFT;
 		}
 		if (right) {
 			vX = PLAYER_SPEED;
-			this.sciezka = "playerRight.png";
+			this.setSciezka("playerRight.png");
 			direction=Direction.RIGHT;
 		}
 
@@ -100,22 +97,6 @@ public class Player {
 	
 	public ArrayList<Missile> getMissile(){
 		return missiles;
-	}
-
-	public BufferedImage getSprite() {
-		return sprite.getSprite(sciezka);
-	}
-
-	public int getX() {
-		return x;
-	}
-
-	public int getY() {
-		return y;
-	}
-
-	public void setSciezka(String sciezka) {
-		this.sciezka = sciezka;
 	}
 
 }

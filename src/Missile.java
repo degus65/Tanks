@@ -1,15 +1,12 @@
-import java.awt.image.BufferedImage;
 
-
-public class Missile {
+public class Missile extends Sprite {
 	private static final int MISSILE_SPEED = 8;
-	private int x=0, y=0, vX=0, vY=0;
-	private SpriteCache sprite = new SpriteCache();
-	private String sciezka="missile.png";
 	private boolean active=true;
 	
 	Missile(Direction d, int x, int y)
 	{
+		super("missile.png");
+		
 		if(d.equals(Direction.UP))
 			vY=-MISSILE_SPEED;
 		if(d.equals(Direction.RIGHT))
@@ -40,18 +37,6 @@ public class Missile {
 		if (y > 423) {
 			active=false;
 		}
-	}
-	
-	public BufferedImage getSprite() {
-		return sprite.getSprite(sciezka);
-	}
-	
-	public int getX() {
-		return x;
-	}
-
-	public int getY() {
-		return y;
 	}
 	
 	public boolean getActive(){

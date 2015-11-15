@@ -2,10 +2,12 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
@@ -20,7 +22,7 @@ public class Stage extends JPanel implements KeyListener, ActionListener {
 	private static final long serialVersionUID = 1L;
 	public static final int SZEROKOSC = 640;
 	public static final int WYSOKOSC = 480;
-	public long usedTime = 0;
+	private ArrayList<Block> blocks=new ArrayList<Block>();
 
 	private String background = "/img/background.png"; // sciezka do tla
 
@@ -36,22 +38,29 @@ public class Stage extends JPanel implements KeyListener, ActionListener {
 		g.drawImage(p1.getSprite(), p1.getX(), p1.getY(), this);
 		g.drawImage(p2.getSprite(), p2.getX(), p2.getY(), this); // rysuj drugiego gracza
 		
+		for (Block b1 : blocks) {    
+        	g.drawImage(b1.getSprite(), b1.getX(), b1.getY(), this);
+    }
+		
 		for (Missile m1 : p1.getMissile()) {    
             	g.drawImage(m1.getSprite(), m1.getX(), m1.getY(), this);
         }
-
-		g.setColor(Color.WHITE);
-		if (usedTime > 0)
-			g.drawString(String.valueOf(1000 / usedTime) + " fps", 5,
-					WYSOKOSC - 50);
-		else
-			g.drawString("--- fps", 5, WYSOKOSC - 50);
 
 	}
 
 	public void updateWorld() {
 		p1.act();
 		p2.act(); // drugi gracz
+		
+		Rectangle r1=p1.getBounds();
+		for (Block b1 : blocks) {    
+        	Rectangle r2=b1.getBounds();
+        	if(!r1.intersects(r2))
+        	{
+        		//tu bêdzie obs³uga kolizji ale jeszcze nie ma xD
+        	}
+    }
+		
 		for (Missile m1 : p1.getMissile()) {
             Missile m = (Missile) m1;
             m.act();
@@ -59,10 +68,8 @@ public class Stage extends JPanel implements KeyListener, ActionListener {
 	}
 
 	public void gameLoop() {
-		long startTime = System.currentTimeMillis();
-		updateWorld();
 		repaint();
-		usedTime = System.currentTimeMillis() - startTime;
+		updateWorld();
 	}
 
 	// tlo
@@ -106,6 +113,8 @@ public class Stage extends JPanel implements KeyListener, ActionListener {
 
 		setFocusable(true);
 		addKeyListener(this);
+		
+		blocks.add(new Block("brick.png", 200, 200));
 	}
 
 }
