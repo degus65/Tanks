@@ -1,5 +1,4 @@
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Rectangle;
@@ -42,26 +41,19 @@ public class Stage extends JPanel implements KeyListener, ActionListener {
         	g.drawImage(b1.getSprite(), b1.getX(), b1.getY(), this);
     }
 		
-		for (Missile m1 : p1.getMissile()) {    
+		for (Missile m1 : p1.getMissiles()) {    
             	g.drawImage(m1.getSprite(), m1.getX(), m1.getY(), this);
         }
 
 	}
 
-	public void updateWorld() {
+	public void updateWorld() {	
 		p1.act();
 		p2.act(); // drugi gracz
 		
-		Rectangle r1=p1.getBounds();
-		for (Block b1 : blocks) {    
-        	Rectangle r2=b1.getBounds();
-        	if(!r1.intersects(r2))
-        	{
-        		//tu bêdzie obs³uga kolizji ale jeszcze nie ma xD
-        	}
-    }
-		
-		for (Missile m1 : p1.getMissile()) {
+		collision();
+	
+		for (Missile m1 : p1.getMissiles()) {
             Missile m = (Missile) m1;
             m.act();
         }
@@ -70,6 +62,39 @@ public class Stage extends JPanel implements KeyListener, ActionListener {
 	public void gameLoop() {
 		repaint();
 		updateWorld();
+	}
+	
+	public void collision(){
+		Rectangle r1=p1.getBounds();
+		for (Block b1 : blocks) {    
+        	Rectangle r2=b1.getBounds();
+        	if(r1.intersects(r2))
+        	{
+        		if(r2.getMinY()<=r1.getMaxY() && p1.direction==Direction.DOWN)
+        			p1.setY((int)r2.getMinY()-p1.getHeight());
+        		
+        		else if(r2.getMaxY()>=r1.getMinY() && p1.direction==Direction.UP)
+        			p1.setY((int)r2.getMaxY());
+        		
+        		else if(r2.getMaxX()>=r1.getMinX() && p1.direction==Direction.LEFT)
+        			p1.setX((int)r2.getMaxX());
+        		
+        		else if(r2.getMinX()<=r1.getMaxX() && p1.direction==Direction.RIGHT)
+        			p1.setX((int)r2.getMinX()-p1.getWidth());
+        			
+        		
+        	}
+    }
+		
+		//to dzia³a
+		for(Block b1: blocks){   //sprawdzanie czy pociski trafiaja w bloki
+			Rectangle r2=b1.getBounds();
+			for(Missile m1: p1.getMissiles()){
+				Rectangle r3=m1.getBounds();
+				if(r2.intersects(r3))
+					m1.setActive(false);
+			}
+		}
 	}
 
 	// tlo
@@ -115,6 +140,7 @@ public class Stage extends JPanel implements KeyListener, ActionListener {
 		addKeyListener(this);
 		
 		blocks.add(new Block("brick.png", 200, 200));
+		blocks.add(new Block("brick.png", 227, 200));
 	}
 
 }

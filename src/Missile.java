@@ -39,7 +39,13 @@ public class Missile extends Sprite {
 		}
 	}
 	
-	public boolean getActive(){
+	public boolean getActive()
+	{
 		return active;
+	}
+	
+	public void setActive(boolean v)
+	{
+		active=v;
 	}
 }

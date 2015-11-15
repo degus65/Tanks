@@ -39,7 +39,7 @@ public class Player extends Sprite {
 	
 	public void fire()
 	{
-		missiles.add(new Missile(direction, x+13, y+13));
+		missiles.add(new Missile(direction, x+width/2, y+height/2));
 	}
 
 	protected void updateSpeed() {
@@ -50,23 +50,21 @@ public class Player extends Sprite {
 			this.setSciezka("playerDown.png");
 			direction=Direction.DOWN;
 		}
-		if (up) {
+		else if (up) {
 			vY = -PLAYER_SPEED;
 			this.setSciezka("playerUp.png");
 			direction=Direction.UP;
 		}
-		if (left) {
+		else if (left) {
 			vX = -PLAYER_SPEED;
 			this.setSciezka("playerLeft.png");
 			direction=Direction.LEFT;
 		}
-		if (right) {
+		else if (right) {
 			vX = PLAYER_SPEED;
 			this.setSciezka("playerRight.png");
 			direction=Direction.RIGHT;
 		}
-
-		// Collision();
 	}
 
 	public void keyPressed(KeyEvent k) {
@@ -95,8 +93,17 @@ public class Player extends Sprite {
 		updateSpeed();
 	}
 	
-	public ArrayList<Missile> getMissile(){
+	public ArrayList<Missile> getMissiles(){
 		return missiles;
 	}
-
+	
+	public void setX(int x)
+	{
+		this.x=x;
+	}
+	
+	public void setY(int y)
+	{
+		this.y=y;
+	}
 }
