@@ -18,6 +18,7 @@ public class Game_frame extends JFrame {
 			public void run() {
 				try {
 					Game_frame frame = new Game_frame();
+					frame.setLocationRelativeTo(null);
 					frame.setVisible(true);
 					frame.contentPane.gameLoop();
 				} catch (Exception e) {

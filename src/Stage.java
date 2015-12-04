@@ -26,7 +26,7 @@ public class Stage extends JPanel implements KeyListener, ActionListener {
 	private String background = "/img/background.png"; // sciezka do tla
 
 	Player p1 = new Player("playerUp.png");
-	Player2 p2 = new Player2("tank.png");
+	Player2 p2 = new Player2("tank2Down.png");
 
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -139,8 +139,116 @@ public class Stage extends JPanel implements KeyListener, ActionListener {
 		setFocusable(true);
 		addKeyListener(this);
 		
-		blocks.add(new Block("brick.png", 200, 200));
-		blocks.add(new Block("brick.png", 227, 200));
+//		blocks.add(new Block("brick.png", 200, 200));
+//		blocks.add(new Block("brick.png", 227, 200));
+		
+//		setStageClear();
+//		setStage1();
+		setStage2();
+	}
+	
+	//pusta mapa
+	public void setStageClear(){
+		blocks.clear();
+	}
+	
+	//mapa1, rozmiar brick to 20x20
+	public void setStage1(){
+		blocks.clear();
+		blocks.add(new Block("brick.png", 310, 230));
+		blocks.add(new Block("brick.png", 290, 230));
+		blocks.add(new Block("brick.png", 270, 230));
+		blocks.add(new Block("brick.png", 230, 230));
+		blocks.add(new Block("brick.png", 250, 230));
+		blocks.add(new Block("brick.png", 330, 230));
+		blocks.add(new Block("brick.png", 350, 230));
+		blocks.add(new Block("brick.png", 370, 230));
+		
+		blocks.add(new Block("brick.png", 90, 130));
+		blocks.add(new Block("brick.png", 110, 130));
+		blocks.add(new Block("brick.png", 130, 130));
+		blocks.add(new Block("brick.png", 150, 130));
+		blocks.add(new Block("brick.png", 150, 150));
+		blocks.add(new Block("brick.png", 150, 170));
+		blocks.add(new Block("brick.png", 170, 130));
+		blocks.add(new Block("brick.png", 190, 130));
+		blocks.add(new Block("brick.png", 210, 130));
+		
+		blocks.add(new Block("brick.png", 90, 330));
+		blocks.add(new Block("brick.png", 110, 330));
+		blocks.add(new Block("brick.png", 130, 330));
+		blocks.add(new Block("brick.png", 150, 330));
+		blocks.add(new Block("brick.png", 150, 310));
+		blocks.add(new Block("brick.png", 150, 290));
+		blocks.add(new Block("brick.png", 170, 330));
+		blocks.add(new Block("brick.png", 190, 330));
+		blocks.add(new Block("brick.png", 210, 330));
+		
+		blocks.add(new Block("brick.png", 390, 130));
+		blocks.add(new Block("brick.png", 410, 130));
+		blocks.add(new Block("brick.png", 430, 130));
+		blocks.add(new Block("brick.png", 450, 130));
+		blocks.add(new Block("brick.png", 450, 150));
+		blocks.add(new Block("brick.png", 450, 170));
+		blocks.add(new Block("brick.png", 470, 130));
+		blocks.add(new Block("brick.png", 490, 130));
+		blocks.add(new Block("brick.png", 510, 130));
+		
+		blocks.add(new Block("brick.png", 390, 330));
+		blocks.add(new Block("brick.png", 410, 330));
+		blocks.add(new Block("brick.png", 430, 330));
+		blocks.add(new Block("brick.png", 450, 330));
+		blocks.add(new Block("brick.png", 450, 290));
+		blocks.add(new Block("brick.png", 450, 310));
+		
+		blocks.add(new Block("brick.png", 470, 330));
+		blocks.add(new Block("brick.png", 490, 330));
+		blocks.add(new Block("brick.png", 510, 330));
+	}
+	
+	
+	public void setStage2(){
+		blocks.clear();
+		
+		//pionowa linia brick
+		int y=130;
+		int setX= 450;
+		for(int i=0; i<=10; i++){
+			blocks.add(new Block("brick.png", setX, y));
+			y=y+20;
+		}
+		
+		//pionowa linia brick
+			y=130;
+			setX= 130;
+			for(int i=0; i<=10; i++){
+				blocks.add(new Block("brick.png", setX, y));
+				y=y+20;
+			}
+		
+		//pozioma linia brick
+		int x=190;
+		int setY=230;
+		for(int i=0; i<=10; i++){
+			blocks.add(new Block("brick.png", x, setY));
+			x=x+20;
+		}
+		
+		//pozioma
+		x=150;
+		setY=130;
+		for(int i=0; i<=12; i++){
+			blocks.add(new Block("brick.png", x, setY));
+			x=x+20;
+		}
+		
+		//pozioma
+		x=190;
+		setY=330;
+		for(int i=0; i<=12; i++){
+			blocks.add(new Block("brick.png", x, setY));
+			x=x+20;
+		}
 	}
 
 }

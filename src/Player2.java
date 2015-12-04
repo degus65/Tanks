@@ -43,19 +43,19 @@ public class Player2 {
 		vY = 0;
 		if (down) {
 			vY = PLAYER2_SPEED;
-			this.sciezka = "tank.png";
+			this.sciezka = "tank2Down.png";
 		}
 		if (up) {
 			vY = -PLAYER2_SPEED;
-			this.sciezka = "tank.png";
+			this.sciezka = "tank2Up.png";
 		}
 		if (left) {
 			vX = -PLAYER2_SPEED;
-			this.sciezka = "tank.png";
+			this.sciezka = "tank2Left.png";
 		}
 		if (right) {
 			vX = PLAYER2_SPEED;
-			this.sciezka = "tank.png";
+			this.sciezka = "tank2Right.png";
 		}
 	}
 
