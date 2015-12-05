@@ -6,6 +6,8 @@ public class Player extends Sprite {
 	private boolean up = false, down = false, left = false, right = false;
 	private ArrayList<Missile> missiles=new ArrayList<Missile>();
 	Direction direction=Direction.UP;
+	private int hp=5;
+	
 
 	Player(String sciezka) {
 		super(sciezka);
@@ -15,6 +17,11 @@ public class Player extends Sprite {
 	public void act() {
 		x += vX;
 		y += vY;
+		
+		if(hp<=0)
+		{
+			Stage.setEndOfGame(true);
+		}
 
 		// KOLIZJE Z RAMKA ~MATIUS
 		if (x < 0) {
@@ -91,6 +98,11 @@ public class Player extends Sprite {
 		if (k.getKeyCode() == KeyEvent.VK_DOWN)
 			down = false;
 		updateSpeed();
+	}
+	
+	public void hit()
+	{
+		hp--;
 	}
 	
 	public ArrayList<Missile> getMissiles(){

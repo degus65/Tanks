@@ -1,17 +1,19 @@
 import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
-public class Player2 {
+public class Player2 extends Sprite {
 
-	private int x = 301, y = 50, vX = 0, vY = 0;
+	//private int x = 301, y = 50, vX = 0, vY = 0;
 	private static final int PLAYER2_SPEED = 3;
 	String sciezka;
-	SpriteCache sprite = new SpriteCache();
+	//SpriteCache sprite = new SpriteCache();
 	private boolean up = false, down = false, left = false, right = false;
+	private ArrayList<Missile> missiles=new ArrayList<Missile>();
+	Direction direction=Direction.DOWN;
 
 	Player2(String sciezka) {
-		this.sciezka = sciezka;
-		// TODO Auto-generated constructor stub
+		super(sciezka);
+		x=301; y=250; vX=0; vY=0;
 	}
 
 	// Player2(String sciezka)
@@ -36,6 +38,17 @@ public class Player2 {
 		if (y > 423) {
 			y = 423;
 		}
+		
+		for (int i=0; i<missiles.size(); i++)
+		{
+			if(missiles.get(i).getActive()==false)
+				missiles.remove(i);
+		}
+	}
+	
+	public void fire()
+	{
+		missiles.add(new Missile(direction, x+width/2, y+height/2));
 	}
 
 	protected void updateSpeed() {
@@ -68,6 +81,8 @@ public class Player2 {
 			up = true;
 		if (k.getKeyCode() == KeyEvent.VK_S)
 			down = true;
+		if (k.getKeyCode() == KeyEvent.VK_P)
+			fire();
 		updateSpeed();
 	}
 
@@ -83,9 +98,14 @@ public class Player2 {
 		updateSpeed();
 	}
 
-	public BufferedImage getSprite() {
-		return sprite.getSprite(sciezka);
+//	public BufferedImage getSprite() {
+//		return sprite.getSprite(sciezka);
+//	}
+	
+	public ArrayList<Missile> getMissiles(){
+		return missiles;
 	}
+	
 
 	public int getX() {
 		return x;
