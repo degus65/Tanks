@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
 
@@ -23,57 +24,88 @@ public class Stage extends JPanel implements KeyListener, ActionListener {
 	public static final int SZEROKOSC = 640;
 	public static final int WYSOKOSC = 480;
 	private ArrayList<Block> blocks=new ArrayList<Block>();
+	private ArrayList<Block> hp1=new ArrayList<Block>();
 	private static boolean endOfGame=false;
-
+	
+	//menu
+	public static enum STATE{
+		SINGLEPLAYER,
+		MENU
+	};
+	public static STATE State = STATE.MENU;
+	private Menu menu = new Menu();
+	
+	
 	private String background = "/img/background.png"; // sciezka do tla
 
-	Player p1 = new Player("playerUp.png");
+	
+	static Player p1 = new Player("playerUp.png");
 	Player2 p2 = new Player2("tank2Down.png");
+	
+	
 
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
+		this.addMouseListener(new MouseInput());
 
 		g.drawImage(getBackgroundImage(), 0, 0, this); // ustawienie t³a
 		// g.setColor(Color.BLACK);
 		// g.fillRect(0, 0, getWidth(), getHeight());
-		g.drawImage(p1.getSprite(), p1.getX(), p1.getY(), this);
-		g.drawImage(p2.getSprite(), p2.getX(), p2.getY(), this); // rysuj drugiego gracza
 		
-		for (Block b1 : blocks) {    
-        	g.drawImage(b1.getSprite(), b1.getX(), b1.getY(), this);
-    }
-		
-		for (Missile m1 : p1.getMissiles()) {    
-            	g.drawImage(m1.getSprite(), m1.getX(), m1.getY(), this);
-        }
-		for (Missile m1 : p2.getMissiles()) {    
-        	g.drawImage(m1.getSprite(), m1.getX(), m1.getY(), this);
-    }
-		
-		if(endOfGame==true)
-		{
-			g.setColor(Color.WHITE);
-			g.drawString("Koniec gry", 200, 200);
+		if(State == STATE.SINGLEPLAYER){
+			
+			
+			g.drawImage(p1.getSprite(), p1.getX(), p1.getY(), this);
+			g.drawImage(p2.getSprite(), p2.getX(), p2.getY(), this); // rysuj drugiego gracza
+			
+			for (Block b1 : blocks) {    
+	        	g.drawImage(b1.getSprite(), b1.getX(), b1.getY(), this);
+			}
+			
+			for (Missile m1 : p1.getMissiles()) {    
+	            	g.drawImage(m1.getSprite(), m1.getX(), m1.getY(), this);
+	        }
+			for (Missile m1 : p2.getMissiles()) {    
+	        	g.drawImage(m1.getSprite(), m1.getX(), m1.getY(), this);
+			}
+			
+			if(endOfGame==true)
+			{
+				g.setColor(Color.WHITE);
+				g.drawString("Koniec gry", 200, 200);
+			}
+
+			
+		}else if(State == STATE.MENU){
+			//menu gry
+			menu.render(g);
+			
 		}
+		
 
 	}
 
 	public void updateWorld() {	
+		if(State == STATE.SINGLEPLAYER)
+		{
+			
+			p1.act();
+			p2.act(); // drugi gracz
+			
+			collision();
 		
-		p1.act();
-		p2.act(); // drugi gracz
+			for (Missile m1 : p1.getMissiles()) {
+	            Missile m = (Missile) m1;
+	            m.act();
+	        }
+			
+			for (Missile m1 : p2.getMissiles()) {
+	            Missile m = (Missile) m1;
+	            m.act();
+	        }
+			
+		}
 		
-		collision();
-	
-		for (Missile m1 : p1.getMissiles()) {
-            Missile m = (Missile) m1;
-            m.act();
-        }
-		
-		for (Missile m1 : p2.getMissiles()) {
-            Missile m = (Missile) m1;
-            m.act();
-        }
 	}
 
 	public void gameLoop() {
@@ -143,13 +175,19 @@ public class Stage extends JPanel implements KeyListener, ActionListener {
 	public static void setEndOfGame(boolean v)
 	{
 		endOfGame=v;
+	
 	}
-
+	
 	@Override
 	public void keyPressed(KeyEvent k) {
 		// TODO Auto-generated method stub
-		p1.keyPressed(k);
-		p2.keyPressed(k);
+		
+		if(State == STATE.SINGLEPLAYER){
+			p1.keyPressed(k);
+			p2.keyPressed(k);
+			
+		}
+		
 	}
 
 	@Override
@@ -181,12 +219,7 @@ public class Stage extends JPanel implements KeyListener, ActionListener {
 		setFocusable(true);
 		addKeyListener(this);
 		
-//		blocks.add(new Block("brick.png", 200, 200));
-//		blocks.add(new Block("brick.png", 227, 200));
-		
-//		setStageClear();
 		setStage1();
-		//setStage2();
 	}
 	
 	//pusta mapa
