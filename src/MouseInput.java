@@ -1,9 +1,13 @@
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 public class MouseInput implements MouseListener {
 
+	
+	
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
@@ -41,6 +45,23 @@ public class MouseInput implements MouseListener {
 			if(my >= 150 && my <= 200 ){
 				//pressed PLayButton
 				Stage.State = Stage.STATE.SINGLEPLAYER;
+			}
+		}
+		//tak na razie doda³em bo mi by³o potzebne
+		if(mx >= Stage.SZEROKOSC / 2 - 50 && mx <= Stage.SZEROKOSC / 2 + 50 )
+		{
+			if(my >= 200 && my <= 275){
+				
+				Thread tserv=new Thread(Connection.serv);
+				tserv.start();
+				Stage.State = Stage.STATE.SINGLEPLAYER;
+			}
+		}
+		if(mx >= Stage.SZEROKOSC / 2 - 50 && mx <= Stage.SZEROKOSC / 2 + 50 )
+		{
+			if(my >= 275 && my <= 350){
+				Thread tcli=new Thread(Connection.cl);
+				tcli.start();
 			}
 		}
 		

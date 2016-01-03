@@ -47,6 +47,7 @@ public class Player extends Sprite {
 	public void fire()
 	{
 		missiles.add(new Missile(direction, x+width/2, y+height/2));
+		Connection.sr.fire(convertDirectionIntoInteger(), x+width/2, y+height/2);
 	}
 
 	protected void updateSpeed() {
@@ -117,5 +118,17 @@ public class Player extends Sprite {
 	public void setY(int y)
 	{
 		this.y=y;
+	}
+	
+	public int convertDirectionIntoInteger()
+	{
+		if(direction==Direction.UP)
+			return 1;
+		else if(direction==Direction.RIGHT)
+			return 2;
+		else if(direction==Direction.DOWN)
+			return 3;
+		else
+			return 4;
 	}
 }
