@@ -36,15 +36,13 @@ public class Stage extends JPanel implements KeyListener, ActionListener {
 	private ConnectionServer cs;//gdy serwer
 	private ConnectionClient cc;//gdy klient
 	
-	//menu
 	public static enum STATE{
 		SINGLEPLAYER,
 		SERVER,
 		CLIENT,
 		MENU
 	};
-	public static STATE State = STATE.MENU;
-	private Menu menu = new Menu();
+	public static STATE State = STATE.SINGLEPLAYER;
 	
 	
 	private String background = "/img/background.png"; // sciezka do tla
@@ -57,15 +55,15 @@ public class Stage extends JPanel implements KeyListener, ActionListener {
 
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		this.addMouseListener(new MouseInput());
+//		this.addMouseListener(new MouseInput());
 
 		g.drawImage(getBackgroundImage(), 0, 0, this); // ustawienie t³a
 		// g.setColor(Color.BLACK);
 		// g.fillRect(0, 0, getWidth(), getHeight());
 		
-		if(State == STATE.SINGLEPLAYER || State==STATE.SERVER || State==STATE.CLIENT){
-			
-			
+//		if(State == STATE.SINGLEPLAYER || State==STATE.SERVER || State==STATE.CLIENT){
+//			
+//			
 			g.drawImage(p1.getSprite(), p1.getX(), p1.getY(), this);
 			g.drawImage(p2.getSprite(), p2.getX(), p2.getY(), this); // rysuj drugiego gracza
 			
@@ -87,19 +85,19 @@ public class Stage extends JPanel implements KeyListener, ActionListener {
 			}
 
 			
-		}else if(State == STATE.MENU){
-			//menu gry
-			menu.render(g);
-			
-		}
-		
+//		}else if(State == STATE.MENU){
+//			//menu gry
+//			menu.render(g);
+//			
+//		}
+//		
 
 	}
 
 	public void updateWorld() {	
-		if(State == STATE.SINGLEPLAYER || State==STATE.SERVER || State==STATE.CLIENT)
-		{
-			
+//		if(State == STATE.SINGLEPLAYER || State==STATE.SERVER || State==STATE.CLIENT)
+//		{
+//			
 			p1.act();
 			p2.act(); // drugi gracz
 			
@@ -115,11 +113,14 @@ public class Stage extends JPanel implements KeyListener, ActionListener {
 	            m.act();
 	        }
 			
-		}
+//		}
 		
 	}
 
 	public void gameLoop() {
+		
+		System.out.println("Stage.gameLoop()");
+		
 		//to bêdzie inaczej, nie w tym miejscu
 		if(State==STATE.SERVER && init==true)
 		{
@@ -209,11 +210,12 @@ public class Stage extends JPanel implements KeyListener, ActionListener {
 	public void keyPressed(KeyEvent k) {
 		// TODO Auto-generated method stub
 		
-		if(State == STATE.SINGLEPLAYER){
+//		if(State == STATE.SINGLEPLAYER){
 			p1.keyPressed(k);
 			p2.keyPressed(k);
+			System.err.println("KEY PRESSED");
 			
-		}
+//		}
 		
 	}
 
@@ -237,6 +239,7 @@ public class Stage extends JPanel implements KeyListener, ActionListener {
 	}
 
 	Stage() {
+
 		setBorder(new EmptyBorder(5, 5, 5, 5));
 		setLayout(new BorderLayout(0, 0));
 

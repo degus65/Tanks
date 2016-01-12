@@ -11,7 +11,6 @@ public class Game_frame extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 	private Stage contentPane;
-	
 
 	/**
 	 * Launch the application.
