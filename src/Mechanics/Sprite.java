@@ -7,23 +7,23 @@ import java.awt.image.BufferedImage;
 public abstract class Sprite {
 	protected int x, y, vX, vY;
 	protected int width, height;
-	private SpriteCache sprite;
+	private SpriteCache spritec;
 	protected String sciezka;
 	protected BufferedImage img;
 	
 	Sprite(String sciezka) 
 	{
 		this.sciezka = sciezka;
-		sprite=new SpriteCache();
+		spritec=new SpriteCache();
 		x=0; y=0; vX=0; vY=0;
-		img=sprite.getSprite(sciezka);
+		img=spritec.getSprite(sciezka);
 		width=img.getWidth();
 		height=img.getHeight();
 	}
 	
 	public BufferedImage getSprite() 
 	{
-		img=sprite.getSprite(sciezka);
+		img=spritec.getSprite(sciezka);
 		return img;
 	}
 	

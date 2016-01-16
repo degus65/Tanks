@@ -60,7 +60,7 @@ public class GameFrame extends JFrame {
 		btnSingleServer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				contentPane.setVisible(false);
-				contentPaneStage = new Stage();
+				contentPaneStage = new Stage(1);//gdy 1 tworzymy serwer
 				frame.setContentPane(contentPaneStage);
 				
 				frame.contentPaneStage.gameLoop();
@@ -74,6 +74,16 @@ public class GameFrame extends JFrame {
 		JButton btnMultiClient = new JButton("Multi / Client");
 		btnMultiClient.setBounds(254, 223, 125, 35);
 		contentPane.add(btnMultiClient);
+		
+		btnMultiClient.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				contentPane.setVisible(false);
+				contentPaneStage = new Stage(2);//gdy 2 tworzymy klienta
+				frame.setContentPane(contentPaneStage);
+				
+				frame.contentPaneStage.gameLoop();
+			}
+		});
 		
 		JButton btnExit = new JButton("EXIT");
 		btnExit.addActionListener(new ActionListener() {

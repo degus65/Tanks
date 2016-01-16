@@ -13,7 +13,6 @@ import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
 
@@ -29,9 +28,8 @@ public class Stage extends JPanel implements KeyListener, ActionListener {
 	public static final int SZEROKOSC = 640;
 	public static final int WYSOKOSC = 480;
 	private ArrayList<Block> blocks=new ArrayList<Block>();
-	private ArrayList<Block> hp1=new ArrayList<Block>();
+	//private ArrayList<Block> hp1=new ArrayList<Block>();
 	private static boolean endOfGame=false;
-	private boolean init=true;
 	
 	private ConnectionServer cs;//gdy serwer
 	private ConnectionClient cc;//gdy klient
@@ -48,8 +46,8 @@ public class Stage extends JPanel implements KeyListener, ActionListener {
 	private String background = "/img/background.png"; // sciezka do tla
 
 	
-	static Player p1 = new Player("playerUp.png");
-	static Player2 p2 = new Player2("tank2Down.png");
+	private Player p1;
+	private Player2 p2;
 	
 	
 
@@ -118,31 +116,12 @@ public class Stage extends JPanel implements KeyListener, ActionListener {
 	}
 
 	public void gameLoop() {
-		
-		System.out.println("Stage.gameLoop()");
-		
-		//to bêdzie inaczej, nie w tym miejscu
-		if(State==STATE.SERVER && init==true)
-		{
-			cs=new ConnectionServer();//gdy serwer
-			p1.setServer(cs.getServer());
-			init=false;
-			System.out.println("init");
-			//p2.setClient(cc.getClient());
-		}
-		else if(State==STATE.CLIENT)
-		{
-			cc=new ConnectionClient();//gdy klient
-			//p2.setServer(cs.getServer());
-			p1.setClient(cc.getClient());
-			init=false;
-		}
 		repaint();
 		updateWorld();
 	}
 	
-	public void collision(){
-		//bloki z graczem
+	private void collisionP1withBlocks()
+	{
 		Rectangle r1=p1.getBounds();
 		for (Block b1 : blocks) {    
         	Rectangle r2=b1.getBounds();
@@ -162,8 +141,35 @@ public class Stage extends JPanel implements KeyListener, ActionListener {
         			
         		
         	}
-    }
-		
+		}
+	}
+	
+	private void collisionP2withBlocks()
+	{
+		Rectangle r1=p2.getBounds();
+		for (Block b1 : blocks) {    
+        	Rectangle r2=b1.getBounds();
+        	if(r1.intersects(r2))
+        	{
+        		if(r2.getMinY()<=r1.getMaxY() && p2.direction==Direction.DOWN)
+        			p2.setY((int)r2.getMinY()-p2.getHeight());
+        		
+        		else if(r2.getMaxY()>=r1.getMinY() && p2.direction==Direction.UP)
+        			p2.setY((int)r2.getMaxY());
+        		
+        		else if(r2.getMaxX()>=r1.getMinX() && p2.direction==Direction.LEFT)
+        			p2.setX((int)r2.getMaxX());
+        		
+        		else if(r2.getMinX()<=r1.getMaxX() && p2.direction==Direction.RIGHT)
+        			p2.setX((int)r2.getMinX()-p2.getWidth());
+        			
+        		
+        	}
+		}
+	}
+	
+	private void collisionP1MissilesWithBlocks()
+	{
 		for(Block b1: blocks){   //sprawdzanie czy pociski trafiaja w bloki
 			Rectangle r2=b1.getBounds();
 			for(Missile m1: p1.getMissiles()){
@@ -172,7 +178,10 @@ public class Stage extends JPanel implements KeyListener, ActionListener {
 					m1.setActive(false);
 			}
 		}
-		
+	}
+	
+	private void collisionP2MissilesWithBlocks()
+	{
 		for(Block b1: blocks){   //sprawdzanie czy pociski trafiaja w bloki
 			Rectangle r2=b1.getBounds();
 			for(Missile m1: p2.getMissiles()){
@@ -181,17 +190,42 @@ public class Stage extends JPanel implements KeyListener, ActionListener {
 					m1.setActive(false);
 			}
 		}
-		
-		r1=p1.getBounds();
+	}
+	
+	private void collisionP1MissilesWithP2()
+	{
+		Rectangle r1=p2.getBounds();
+		for(Missile m1: p1.getMissiles()){
+			Rectangle r3=m1.getBounds();
+			if(r1.intersects(r3))
+			{
+				m1.setActive(false);
+				p2.hit();
+			}
+				
+		}
+	}
+	
+	private void collisionP2MissilesWithP1()
+	{
+		Rectangle r1=p1.getBounds();
 		for(Missile m1: p2.getMissiles()){
 			Rectangle r3=m1.getBounds();
 			if(r1.intersects(r3))
 			{
 				m1.setActive(false);
 				p1.hit();
-			}
-				
+			}	
 		}
+	}
+	private void collision(){
+		
+		collisionP1withBlocks();
+		collisionP2withBlocks();
+		collisionP1MissilesWithBlocks();
+		collisionP2MissilesWithBlocks();
+		collisionP1MissilesWithP2();
+		collisionP2MissilesWithP1();
 	}
 
 	// tlo
@@ -212,8 +246,8 @@ public class Stage extends JPanel implements KeyListener, ActionListener {
 		
 //		if(State == STATE.SINGLEPLAYER){
 			p1.keyPressed(k);
-			p2.keyPressed(k);
-			System.err.println("KEY PRESSED");
+			//p2.keyPressed(k);
+			//System.err.println("KEY PRESSED");
 			
 //		}
 		
@@ -223,7 +257,7 @@ public class Stage extends JPanel implements KeyListener, ActionListener {
 	public void keyReleased(KeyEvent k) {
 		// TODO Auto-generated method stub
 		p1.keyReleased(k);
-		p2.keyReleased(k);
+		//p2.keyReleased(k);
 	}
 
 	@Override
@@ -237,8 +271,25 @@ public class Stage extends JPanel implements KeyListener, ActionListener {
 		// TODO Auto-generated method stub
 		gameLoop();
 	}
+	
+	public void createServerOrClient(int c)
+	{
+		if(c==1)
+		{
+			p2=new Player2("p2/playerDown.png", c);
+			cs=new ConnectionServer(p2);
+			p1=new Player("p1/playerUp.png", cs.getServer());
+		}
+			
+		else if(c==2)
+		{
+			p2=new Player2("p1/playerUp.png", c);
+			cc=new ConnectionClient(p2);
+			p1=new Player("p2/playerDown.png", cc.getClient());
+		}
+	}
 
-	Stage() {
+	Stage(int c) {
 
 		setBorder(new EmptyBorder(5, 5, 5, 5));
 		setLayout(new BorderLayout(0, 0));
@@ -249,6 +300,8 @@ public class Stage extends JPanel implements KeyListener, ActionListener {
 		setFocusable(true);
 		addKeyListener(this);
 		
+		this.createServerOrClient(c);
+			
 		setStage1();
 	}
 	

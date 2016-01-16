@@ -25,7 +25,7 @@ public class Menu {
 		Font ftn1= new Font("arial", Font.BOLD, 30);
 		g.setFont(ftn1);
 		g.drawString("PLAY", playButton.x + 15, playButton.y +30);
-		Button pbtn = new Button("playButton.png", Stage.SZEROKOSC /2 - 50, 150);
+		//Button pbtn = new Button("playButton.png", Stage.SZEROKOSC /2 - 50, 150);
 		g2d.draw(playButton);
 		g.drawString("Help", helpButton.x + 15, helpButton.y +30);
 		g2d.draw(helpButton);

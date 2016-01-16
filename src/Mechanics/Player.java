@@ -10,15 +10,27 @@ public class Player extends Sprite {
 	private static final int PLAYER_SPEED = 4;
 	private boolean up = false, down = false, left = false, right = false;
 	private ArrayList<Missile> missiles=new ArrayList<Missile>();
-	Direction direction=Direction.UP;
+	Direction direction;
 	private int hp=5;
 	private ServerSender serv;
 	private ClientReceiver cl;
+	private int mode;
 	
 
-	Player(String sciezka) {
+	Player(String sciezka, ServerSender ss) {
 		super(sciezka);
 		x=301; y=400; vX=0; vY=0;
+		serv=ss;
+		direction=Direction.UP;
+		mode=1;
+	}
+	
+	Player(String sciezka, ClientReceiver cr) {
+		super(sciezka);
+		x=301; y=250; vX=0; vY=0;
+		cl=cr;
+		direction=Direction.DOWN;
+		mode=2;
 	}
 
 	public void act() {
@@ -50,23 +62,24 @@ public class Player extends Sprite {
 				missiles.remove(i);
 		}
 	}
-	
-	public void setServer(ServerSender serv)
-	{
-		this.serv=serv;
-	}
-	
-	public void setClient(ClientReceiver cl)
-	{
-		this.cl=cl;
-	}
-	
+		
 	public void fire()
 	{
 		missiles.add(new Missile(direction, x+width/2, y+height/2));
-		serv.fire();
+		if(serv!=null)
+			serv.fire(x+width/2, y+height/2);
+		else if(cl!=null)
+			cl.fire(x+width/2, y+height/2);;
 	}
-
+	
+	public void cord(int c)
+	{
+		if(serv!=null)
+			serv.coordinates(c);
+		else if(cl!=null)
+			cl.coordinates(c);
+	}
+	
 	protected void updateSpeed() {
 		vX = 0;
 		vY = 0;
@@ -74,21 +87,29 @@ public class Player extends Sprite {
 			vY = PLAYER_SPEED;
 			this.setSciezka("playerDown.png");
 			direction=Direction.DOWN;
+			cord(3);
 		}
 		else if (up) {
 			vY = -PLAYER_SPEED;
 			this.setSciezka("playerUp.png");
 			direction=Direction.UP;
+			cord(1);
 		}
 		else if (left) {
 			vX = -PLAYER_SPEED;
 			this.setSciezka("playerLeft.png");
 			direction=Direction.LEFT;
+			cord(4);
 		}
 		else if (right) {
 			vX = PLAYER_SPEED;
 			this.setSciezka("playerRight.png");
 			direction=Direction.RIGHT;
+			cord(2);
+		}
+		else
+		{
+			cord(0);
 		}
 	}
 
@@ -137,15 +158,22 @@ public class Player extends Sprite {
 		this.y=y;
 	}
 	
-	public int convertDirectionIntoInteger()
-	{
-		if(direction==Direction.UP)
-			return 1;
-		else if(direction==Direction.RIGHT)
-			return 2;
-		else if(direction==Direction.DOWN)
-			return 3;
-		else
-			return 4;
+	public void setSciezka(String sciezka) {
+		if(mode==1)
+			this.sciezka="p1/"+sciezka;
+		else if(mode==2)
+			this.sciezka="p2/"+sciezka;
 	}
+	
+//	public int convertDirectionIntoInteger()
+//	{
+//		if(direction==Direction.UP)
+//			return 1;
+//		else if(direction==Direction.RIGHT)
+//			return 2;
+//		else if(direction==Direction.DOWN)
+//			return 3;
+//		else
+//			return 4;
+//	}
 }

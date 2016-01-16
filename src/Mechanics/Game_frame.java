@@ -38,7 +38,7 @@ public class Game_frame extends JFrame {
 		// setBounds(100, 100, 800, 500);
 		setSize(Stage.SZEROKOSC, Stage.WYSOKOSC);
 		setResizable(false);
-		contentPane = new Stage();
+		contentPane = new Stage(1);
 		add(contentPane);
 
 	}

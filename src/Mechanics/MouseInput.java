@@ -1,10 +1,9 @@
 package Mechanics;
 
-import java.awt.Rectangle;
+
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
+
 
 public class MouseInput implements MouseListener {
 
