@@ -50,12 +50,11 @@ public class ClientReceiver implements Callable<Boolean> {
 		exec.submit(fireTask);
 	}
 	
-	public void coordinates(int c)
+	public void coord(int x, int y, int d)
 	{
-		FutureTask<Boolean> coord=new FutureTask<Boolean>(new Coordinates(out, c));
-		exec.submit(coord);
+		FutureTask<Boolean> cord=new FutureTask<Boolean>(new Coordinates(out, x, y, d));
+		exec.submit(cord);
 	}
-	
 	
 	public Boolean call() throws IOException {
 		// TODO Auto-generated method stub
@@ -65,7 +64,6 @@ public class ClientReceiver implements Callable<Boolean> {
 		{
 			if((strLine = in.readLine()) != null)
 			{
-				//System.out.println(strLine);
 				if(strLine.equalsIgnoreCase("FIRE"))
 				{
 					strLine = in.readLine();
@@ -75,11 +73,17 @@ public class ClientReceiver implements Callable<Boolean> {
 					p2.fire(x, y);
 				}
 				
-				if(strLine.equalsIgnoreCase("COORD"))
+				if(strLine.equalsIgnoreCase("SETXY"))
 				{
-					strLine=in.readLine();
-					int c=Integer.parseInt(strLine);
-					p2.getCoordinates(c);
+					strLine = in.readLine();
+					int x=Integer.parseInt(strLine);
+					strLine = in.readLine();
+					int y=Integer.parseInt(strLine);
+					strLine = in.readLine();
+					int d=Integer.parseInt(strLine);
+					p2.setX(x);
+					p2.setY(y);
+					p2.setDirection(d);
 				}
 			}
 		}

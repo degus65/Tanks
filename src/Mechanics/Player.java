@@ -61,6 +61,10 @@ public class Player extends Sprite {
 			if(missiles.get(i).getActive()==false)
 				missiles.remove(i);
 		}
+		if(serv!=null)
+			serv.coord(x, y, convertDirectionIntoInteger());
+		else if(cl!=null)
+			cl.coord(x, y,  convertDirectionIntoInteger());
 	}
 		
 	public void fire()
@@ -72,44 +76,29 @@ public class Player extends Sprite {
 			cl.fire(x+width/2, y+height/2);;
 	}
 	
-	public void cord(int c)
-	{
-		if(serv!=null)
-			serv.coordinates(c);
-		else if(cl!=null)
-			cl.coordinates(c);
-	}
 	
-	protected void updateSpeed() {
+	private void updateSpeed() {
 		vX = 0;
 		vY = 0;
 		if (down) {
 			vY = PLAYER_SPEED;
 			this.setSciezka("playerDown.png");
 			direction=Direction.DOWN;
-			cord(3);
 		}
 		else if (up) {
 			vY = -PLAYER_SPEED;
 			this.setSciezka("playerUp.png");
 			direction=Direction.UP;
-			cord(1);
 		}
 		else if (left) {
 			vX = -PLAYER_SPEED;
 			this.setSciezka("playerLeft.png");
 			direction=Direction.LEFT;
-			cord(4);
 		}
 		else if (right) {
 			vX = PLAYER_SPEED;
 			this.setSciezka("playerRight.png");
 			direction=Direction.RIGHT;
-			cord(2);
-		}
-		else
-		{
-			cord(0);
 		}
 	}
 
@@ -165,15 +154,17 @@ public class Player extends Sprite {
 			this.sciezka="p2/"+sciezka;
 	}
 	
-//	public int convertDirectionIntoInteger()
-//	{
-//		if(direction==Direction.UP)
-//			return 1;
-//		else if(direction==Direction.RIGHT)
-//			return 2;
-//		else if(direction==Direction.DOWN)
-//			return 3;
-//		else
-//			return 4;
-//	}
+	public int convertDirectionIntoInteger()
+	{
+		if(direction==Direction.UP)
+			return 1;
+		else if(direction==Direction.RIGHT)
+			return 2;
+		else if(direction==Direction.DOWN)
+			return 3;
+		else
+			return 4;
+	}
+	
+	
 }

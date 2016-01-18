@@ -294,7 +294,7 @@ public class Stage extends JPanel implements KeyListener, ActionListener {
 		setBorder(new EmptyBorder(5, 5, 5, 5));
 		setLayout(new BorderLayout(0, 0));
 
-		Timer timer = new Timer(1000 / 60, (ActionListener) this);
+		Timer timer = new Timer(1000 / 60, (ActionListener) this);//60 fps
 		timer.start();
 
 		setFocusable(true);

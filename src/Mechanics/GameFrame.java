@@ -3,9 +3,11 @@ package Mechanics;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -59,12 +61,13 @@ public class GameFrame extends JFrame {
 		JButton btnSingleServer = new JButton("Single / Server");
 		btnSingleServer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				//JOptionPane.showMessageDialog(contentPane, "Oczekiwanie na klienta", "Serwer", JOptionPane.INFORMATION_MESSAGE, null);
 				contentPane.setVisible(false);
 				contentPaneStage = new Stage(1);//gdy 1 tworzymy serwer
 				frame.setContentPane(contentPaneStage);
 				
 				frame.contentPaneStage.gameLoop();
-				System.out.println("STAGE");
+				//System.out.println("STAGE");
 			}
 		});
 		
