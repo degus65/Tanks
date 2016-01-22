@@ -12,6 +12,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
 
+import Mechanics.GameFrame;
 import Mechanics.Player2;
 
 
@@ -22,11 +23,14 @@ public class ClientReceiver implements Callable<Boolean> {
 	private Socket g;
 	private Player2 p2;
 	ExecutorService exec;
+	private String adress  = GameFrame.ipAdress;
 	
 	public ClientReceiver(Player2 p2) {
 		
 		try {
-			g=new Socket(InetAddress.getLocalHost(), 50000);
+//			g=new Socket(InetAddress.getLocalHost(), 50000);
+			g=new Socket(adress, 50000);
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

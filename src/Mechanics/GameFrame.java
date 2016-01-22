@@ -3,13 +3,15 @@ package Mechanics;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
-
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.awt.event.ActionEvent;
+import javax.swing.JTextField;
 
 public class GameFrame extends JFrame {
 
@@ -22,9 +24,15 @@ public class GameFrame extends JFrame {
 	private Stage contentPaneStage;
 	private static GameFrame frame;
 
-	public static final int SZEROKOSC = 640;
-	public static final int WYSOKOSC = 480;
+	public static final int SZEROKOSC = 800;
+	public static final int WYSOKOSC = 600;
 
+	public static String ipAdress = "127.0.0.1";
+	private JTextField textFieldIP;
+	private JTextField textFieldServIp;
+	
+
+	
 	
 	/**
 	 * Launch the application.
@@ -33,8 +41,10 @@ public class GameFrame extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					
 					frame = new GameFrame();
 					frame.setLocationRelativeTo(null);
+					
 					frame.setVisible(true);
 					
 					
@@ -47,8 +57,9 @@ public class GameFrame extends JFrame {
 
 	/**
 	 * Create the frame.
+	 * @throws IOException 
 	 */
-	public GameFrame() {
+	public GameFrame() throws IOException {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(Stage.SZEROKOSC, Stage.WYSOKOSC);
 		setResizable(false);
@@ -58,9 +69,13 @@ public class GameFrame extends JFrame {
 		contentPane.setLayout(null);
 		
 		
-		JButton btnSingleServer = new JButton("Single / Server");
+		
+		
+		JButton btnSingleServer = new JButton("Stworz Gre");
 		btnSingleServer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+				ipAdress = textFieldIP.getText();
 				//JOptionPane.showMessageDialog(contentPane, "Oczekiwanie na klienta", "Serwer", JOptionPane.INFORMATION_MESSAGE, null);
 				contentPane.setVisible(false);
 				contentPaneStage = new Stage(1);//gdy 1 tworzymy serwer
@@ -71,11 +86,11 @@ public class GameFrame extends JFrame {
 			}
 		});
 		
-		btnSingleServer.setBounds(254, 146, 125, 35);
+		btnSingleServer.setBounds(170, 144, 125, 35);
 		contentPane.add(btnSingleServer);
 		
-		JButton btnMultiClient = new JButton("Multi / Client");
-		btnMultiClient.setBounds(254, 223, 125, 35);
+		JButton btnMultiClient = new JButton("Dolacz do gry:");
+		btnMultiClient.setBounds(170, 223, 125, 35);
 		contentPane.add(btnMultiClient);
 		
 		btnMultiClient.addActionListener(new ActionListener(){
@@ -85,10 +100,11 @@ public class GameFrame extends JFrame {
 				frame.setContentPane(contentPaneStage);
 				
 				frame.contentPaneStage.gameLoop();
+				
 			}
 		});
 		
-		JButton btnExit = new JButton("EXIT");
+		JButton btnExit = new JButton("WYJSCIE");
 		btnExit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("EXIT");
@@ -98,6 +114,23 @@ public class GameFrame extends JFrame {
 		});
 		btnExit.setBounds(254, 299, 125, 35);
 		contentPane.add(btnExit);
+		
+		textFieldIP = new JTextField();
+		textFieldIP.setText("127.0.0.1");
+		textFieldIP.setBounds(340, 230, 125, 20);
+		contentPane.add(textFieldIP);
+		textFieldIP.setColumns(10);
+		
+		textFieldServIp = new JTextField();
+		textFieldServIp.setBounds(340, 151, 125, 20);
+		contentPane.add(textFieldServIp);
+		textFieldServIp.setColumns(10);
+		try {
+			textFieldServIp.setText(InetAddress.getLocalHost().getHostAddress());
+		} catch (UnknownHostException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		textFieldServIp.setEditable(false);
 	}
-
 }

@@ -29,7 +29,27 @@ public class Player2 extends Sprite {
 			
 	}
 
+	
 
+	public int getHp() {
+		return hp;
+	}
+
+
+
+	public void setHp(int hp) {
+		this.hp = hp;
+	}
+
+
+
+	public void setSciezka(String sciezka) {
+		if(mode==1)
+			this.sciezka="p2/"+sciezka;
+		else if(mode==2)
+			this.sciezka="p1/"+sciezka;
+	}
+	
 	public void act() {
 		x += vX;
 		y += vY;
@@ -96,6 +116,8 @@ public class Player2 extends Sprite {
 	}
 	
 	
+	
+	
 	public void setX(int x)
 	{
 		this.x=x;
@@ -110,6 +132,11 @@ public class Player2 extends Sprite {
 	public void hit()
 	{
 		hp--;
+	}
+	
+	public int getHP(){
+		
+		return hp;
 	}
 
 
@@ -139,11 +166,6 @@ public class Player2 extends Sprite {
 	
 	
 	
-	public void setSciezka(String sciezka) {
-		if(mode==1)
-			this.sciezka="p2/"+sciezka;
-		else if(mode==2)
-			this.sciezka="p1/"+sciezka;
-	}
+
 
 }

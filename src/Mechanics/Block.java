@@ -10,5 +10,4 @@ public class Block extends Sprite {
 		this.x=x;
 		this.y=y;
 	}
-	
 }

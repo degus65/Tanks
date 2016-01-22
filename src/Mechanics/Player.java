@@ -40,6 +40,7 @@ public class Player extends Sprite {
 		if(hp<=0)
 		{
 			Stage.setEndOfGame(true);
+			
 		}
 
 		// KOLIZJE Z RAMKA ~MATIUS
@@ -133,6 +134,13 @@ public class Player extends Sprite {
 		hp--;
 	}
 	
+	public int getHP(){
+		
+		return hp;
+	}
+
+
+	
 	public ArrayList<Missile> getMissiles(){
 		return missiles;
 	}
@@ -147,6 +155,14 @@ public class Player extends Sprite {
 		this.y=y;
 	}
 	
+	public int getHp() {
+		return hp;
+	}
+
+	public void setHp(int hp) {
+		this.hp = hp;
+	}
+
 	public void setSciezka(String sciezka) {
 		if(mode==1)
 			this.sciezka="p1/"+sciezka;
