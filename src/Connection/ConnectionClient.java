@@ -15,7 +15,7 @@ public class ConnectionClient {
 		cl=new ClientReceiver(p2);
 		exec.submit(cl);
 	}
-
+	
 	public ClientReceiver getClient()
 	{
 		return cl;

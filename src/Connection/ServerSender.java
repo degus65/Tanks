@@ -22,11 +22,14 @@ public class ServerSender implements Callable<Boolean> {
 	private BufferedReader in;
 	private Player2 p2;
 	private ExecutorService exec = Executors.newFixedThreadPool(5);
+	private int stage;
+	private boolean gameStart;
 	
-	ServerSender(Player2 p2, Socket g)
+	ServerSender(Player2 p2, Socket g, int s)
 	{
 		this.clientSocket=g;
 		this.p2=p2;
+		this.stage=s;
 	}
 	
 	public void establishWriterAndReader()
@@ -53,6 +56,12 @@ public class ServerSender implements Callable<Boolean> {
 		exec.submit(cord);
 	}
 	
+	private void whichStage(int s)
+	{
+		FutureTask<Boolean> st=new FutureTask<Boolean>(new whichStage(out, s));
+		exec.submit(st);
+	}
+	
 	public Boolean call() throws InterruptedException, ExecutionException, NumberFormatException, IOException
 	{
 		establishWriterAndReader();
@@ -60,9 +69,10 @@ public class ServerSender implements Callable<Boolean> {
 		
 		while(true)
 		{
+			if(gameStart==false)
+				whichStage(stage);
 			if((strLine = in.readLine()) != null)
 			{
-				//System.out.println(strLine);
 				if(strLine.equalsIgnoreCase("FIRE"))
 				{
 					strLine = in.readLine();
@@ -74,6 +84,7 @@ public class ServerSender implements Callable<Boolean> {
 				
 				if(strLine.equalsIgnoreCase("SETXY"))
 				{
+					gameStart=true;
 					strLine = in.readLine();
 					int x=Integer.parseInt(strLine);
 					strLine = in.readLine();

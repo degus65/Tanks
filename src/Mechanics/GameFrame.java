@@ -6,11 +6,14 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
+
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.concurrent.ExecutionException;
 import java.awt.event.ActionEvent;
+
 import javax.swing.JTextField;
 
 public class GameFrame extends JFrame {
@@ -78,7 +81,12 @@ public class GameFrame extends JFrame {
 				ipAdress = textFieldIP.getText();
 				//JOptionPane.showMessageDialog(contentPane, "Oczekiwanie na klienta", "Serwer", JOptionPane.INFORMATION_MESSAGE, null);
 				contentPane.setVisible(false);
-				contentPaneStage = new Stage(1);//gdy 1 tworzymy serwer
+				try {
+					contentPaneStage = new Stage(1);//gdy 1 tworzymy serwer
+				} catch (InterruptedException | ExecutionException | NumberFormatException | IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				frame.setContentPane(contentPaneStage);
 				
 				frame.contentPaneStage.gameLoop();
@@ -96,7 +104,12 @@ public class GameFrame extends JFrame {
 		btnMultiClient.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				contentPane.setVisible(false);
-				contentPaneStage = new Stage(2);//gdy 2 tworzymy klienta
+				try {
+					contentPaneStage = new Stage(2);//gdy 2 tworzymy klienta
+				} catch (InterruptedException | ExecutionException | NumberFormatException | IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				frame.setContentPane(contentPaneStage);
 				
 				frame.contentPaneStage.gameLoop();

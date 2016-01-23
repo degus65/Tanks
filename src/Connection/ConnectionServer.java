@@ -12,11 +12,11 @@ public class ConnectionServer {
 	private ServerConnectingWithClient serv;
 	private ExecutorService exec = Executors.newFixedThreadPool(1);
 	
-	public ConnectionServer(Player2 p2)
+	public ConnectionServer(Player2 p2, int s)
 	{
 		serv=new ServerConnectingWithClient();
 		Socket g=serv.connectWithClient();
-		servSend=new ServerSender(p2, g);
+		servSend=new ServerSender(p2, g, s);
 		exec.submit(servSend);
 	}
 	

@@ -7,7 +7,7 @@ import Connection.ClientReceiver;
 import Connection.ServerSender;
 
 public class Player extends Sprite {
-	private static final int PLAYER_SPEED = 4;
+	private static final int PLAYER_SPEED = 5;
 	private boolean up = false, down = false, left = false, right = false;
 	private ArrayList<Missile> missiles=new ArrayList<Missile>();
 	Direction direction;
@@ -27,20 +27,23 @@ public class Player extends Sprite {
 	
 	Player(String sciezka, ClientReceiver cr) {
 		super(sciezka);
-		x=301; y=250; vX=0; vY=0;
+		x=301; y=100; vX=0; vY=0;
 		cl=cr;
 		direction=Direction.DOWN;
 		mode=2;
 	}
 
 	public void act() {
+		if(serv!=null)
+			serv.coord(x, y, convertDirectionIntoInteger());
+		else if(cl!=null)
+			cl.coord(x, y,  convertDirectionIntoInteger());
 		x += vX;
 		y += vY;
 		
 		if(hp<=0)
 		{
-			Stage.setEndOfGame(true);
-			
+			Stage.setEndOfGame(true);		
 		}
 
 		// KOLIZJE Z RAMKA ~MATIUS
@@ -62,10 +65,22 @@ public class Player extends Sprite {
 			if(missiles.get(i).getActive()==false)
 				missiles.remove(i);
 		}
-		if(serv!=null)
-			serv.coord(x, y, convertDirectionIntoInteger());
-		else if(cl!=null)
-			cl.coord(x, y,  convertDirectionIntoInteger());
+		
+	}
+	
+	public void startOver()
+	{
+		if(mode==1)
+		{
+			x=301; y=400; vX=0; vY=0;
+			this.setSciezka("playerUp.png");
+		}	
+		else if(mode==2)
+		{
+			x=301; y=100; vX=0; vY=0;
+			this.setSciezka("playerDown.png");
+		}
+		hp=5;
 	}
 		
 	public void fire()

@@ -5,9 +5,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.net.InetAddress;
+//import java.net.InetAddress;
 import java.net.Socket;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
@@ -24,6 +25,7 @@ public class ClientReceiver implements Callable<Boolean> {
 	private Player2 p2;
 	ExecutorService exec;
 	private String adress  = GameFrame.ipAdress;
+	private int stage=0;
 	
 	public ClientReceiver(Player2 p2) {
 		
@@ -60,10 +62,15 @@ public class ClientReceiver implements Callable<Boolean> {
 		exec.submit(cord);
 	}
 	
+	public int getWhichStage() throws InterruptedException, ExecutionException, NumberFormatException, IOException
+	{
+		return stage;
+	}
+	
 	public Boolean call() throws IOException {
 		// TODO Auto-generated method stub
 		String strLine="";
-		
+			
 		while(true)
 		{
 			if((strLine = in.readLine()) != null)
@@ -76,7 +83,6 @@ public class ClientReceiver implements Callable<Boolean> {
 					int y=Integer.parseInt(strLine);
 					p2.fire(x, y);
 				}
-				
 				if(strLine.equalsIgnoreCase("SETXY"))
 				{
 					strLine = in.readLine();
@@ -88,6 +94,12 @@ public class ClientReceiver implements Callable<Boolean> {
 					p2.setX(x);
 					p2.setY(y);
 					p2.setDirection(d);
+				}
+				else if(strLine.equalsIgnoreCase("STAGE"))
+				{
+					strLine = in.readLine();
+					int s=Integer.parseInt(strLine);
+					stage=s;
 				}
 			}
 		}

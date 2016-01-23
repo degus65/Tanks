@@ -8,11 +8,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
+
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
+
 import Connection.ConnectionClient;
 import Connection.ConnectionServer;
 
@@ -26,7 +30,7 @@ public class Stage extends JPanel implements KeyListener, ActionListener {
 	public static final int WYSOKOSC = 480;
 	private ArrayList<Block> blocks = new ArrayList<Block>();
 	private ArrayList<Life> lifes = new ArrayList<Life>();
-
+	private Timer timer;
 
 	private static boolean endOfGame = false;
 
@@ -71,7 +75,12 @@ public class Stage extends JPanel implements KeyListener, ActionListener {
 		}
 
 		if (endOfGame == true) {
-			setEndGameScreen(g);
+			//setEndGameScreen(g);  jak bedzie interakcja to odkomentowac
+			//tutaj interakcja do wyboru czy graæ od nowa czy nie, jesli nie to mo¿na dac system.exit albo coœ takiego
+			//if grac dalej
+			endOfGame=false;
+			p1.startOver();
+			p2.startOver();
 		}
 
 	}
@@ -141,29 +150,46 @@ public class Stage extends JPanel implements KeyListener, ActionListener {
 			}
 		}
 	}
+	
+	private void collisionP1withP2() {
+		Rectangle r1 = p1.getBounds();
+		Rectangle r2 = p2.getBounds();
+		if (r1.intersects(r2)) {//to nie dziala jeszcze
+//			if (r2.getMinY() <= r1.getMaxY())
+//				p2.setY((int) r2.getMinY() - p2.getHeight());
+//			else if (r2.getMaxY() >= r1.getMinY())
+//				p2.setY((int) r2.getMaxY());
+//
+//			else if (r2.getMaxX() >= r1.getMinX())
+//				p2.setX((int) r2.getMaxX());
+//
+//			else if (r2.getMinX() <= r1.getMaxX())
+//				p2.setX((int) r2.getMinX() - p2.getWidth());
+		}
+	}
 
 	private void collisionP1withLife() {
 		Rectangle r1 = p1.getBounds();
-		for (Life l1 : lifes) {
-			Rectangle r2 = l1.getBounds();
+		for (int i=0; i<lifes.size(); i++) {
+			Rectangle r2 = lifes.get(i).getBounds();
 			if (r1.intersects(r2)) {
 				p1.setHp(hp1++);
-				lifes.remove(l1);
+				lifes.remove(i);
 			}
 		}
 	}
 	
 	private void collisionP2withLife() {
 		Rectangle r1 = p2.getBounds();
-		for (Life l1 : lifes) {
-			Rectangle r2 = l1.getBounds();
+		for (int i=0; i<lifes.size(); i++) {
+			Rectangle r2 = lifes.get(i).getBounds();
 			if (r1.intersects(r2)) {
 				p2.setHp(hp1++);
-				lifes.remove(l1);
+				lifes.remove(i);
 			}
 		}
 	}
-
+	
 	private void collisionP2withBlocks() {
 		Rectangle r1 = p2.getBounds();
 		for (Block b1 : blocks) {
@@ -241,6 +267,8 @@ public class Stage extends JPanel implements KeyListener, ActionListener {
 
 		collisionP1withLife();
 		collisionP2withLife();
+		
+		collisionP1withP2();
 	}
 
 	// tlo
@@ -289,34 +317,48 @@ public class Stage extends JPanel implements KeyListener, ActionListener {
 		gameLoop();
 	}
 
-	public void createServerOrClient(int c) {
+	public int createServerOrClient(int c) throws InterruptedException, ExecutionException, NumberFormatException, IOException {
 		if (c == 1) {
+			int chooseStage=1;//tutaj jakaœ interakcja co do wyboru stage'a, najlepiej w innej funkci zeby przejrzyscie bylo
 			p2 = new Player2("p2/playerDown.png", c);
-			cs = new ConnectionServer(p2);
+			cs = new ConnectionServer(p2, chooseStage);
 			p1 = new Player("p1/playerUp.png", cs.getServer());
+			return chooseStage;
 		}
-
 		else if (c == 2) {
 			p2 = new Player2("p1/playerUp.png", c);
 			cc = new ConnectionClient(p2);
 			p1 = new Player("p2/playerDown.png", cc.getClient());
+			int s=0;
+			while(s==0)
+			{
+				s=cc.getClient().getWhichStage();
+			}
+			
+			return s;
 		}
+		return 0;
 	}
 
-	Stage(int c) {
+	Stage(int c) throws InterruptedException, ExecutionException, NumberFormatException, IOException {
 
 		setBorder(new EmptyBorder(5, 5, 5, 5));
 		setLayout(new BorderLayout(0, 0));
 
-		Timer timer = new Timer(1000 / 60, (ActionListener) this);// 60 fps
+		timer = new Timer(1000 / 60, (ActionListener) this);// 60 fps
 		timer.start();
 
 		setFocusable(true);
 		addKeyListener(this);
 
-		this.createServerOrClient(c);
-
-		setStage1();
+		
+		
+		int st=createServerOrClient(c);
+		
+		if(st==1)
+			setStage1();
+		else if(st==2)
+			setStage2();
 	}
 
 	// pusta mapa
