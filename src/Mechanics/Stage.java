@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
@@ -46,6 +47,7 @@ public class Stage extends JPanel implements KeyListener, ActionListener {
 
 	private int hp1 = 0;
 	private int hp2 = 0;
+	boolean a = true;
 
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -75,14 +77,26 @@ public class Stage extends JPanel implements KeyListener, ActionListener {
 		}
 
 		if (endOfGame == true) {
-			//setEndGameScreen(g);  jak bedzie interakcja to odkomentowac
-			//tutaj interakcja do wyboru czy graæ od nowa czy nie, jesli nie to mo¿na dac system.exit albo coœ takiego
-			//if grac dalej
-			endOfGame=false;
-			p1.startOver();
-			p2.startOver();
+			
+			setEndGameScreen(g); 
+			if(a){ 
+				a = false;
+				int dialogButton = JOptionPane.YES_NO_OPTION;
+				int dialogResult = JOptionPane.showConfirmDialog(this, "Nowa gra? Drugi gracz te¿ musi potwierdzic", "Nowa gra?", dialogButton);
+				if(dialogResult == 0) {
+				  System.out.println("Yes option");
+					a=true;
+					endOfGame=false;
+					p1.startOver();
+					p2.startOver();
+					setLifes();
+					
+				} else {
+				  System.out.println("No Option");
+				  System.exit(1);
+				} 
+			}
 		}
-
 	}
 
 	public void updateWorld() {
@@ -106,10 +120,10 @@ public class Stage extends JPanel implements KeyListener, ActionListener {
 	public void checkHP(Graphics g) {
 
 		hp1 = p1.getHP();
-		// System.out.println("PLAYER1 HP: " + hp1 );
+//		 System.out.println("PLAYER1 HP: " + hp1 );
 
 		hp2 = p2.getHP();
-		// System.out.println("PLAYER2 HP: " + hp2 );
+//		 System.out.println("PLAYER2 HP: " + hp2 );
 
 		for (int i1 = 0; i1 < hp1; i1++) {
 			int x1 = 20 + i1 * 22;
@@ -173,7 +187,7 @@ public class Stage extends JPanel implements KeyListener, ActionListener {
 		for (int i=0; i<lifes.size(); i++) {
 			Rectangle r2 = lifes.get(i).getBounds();
 			if (r1.intersects(r2)) {
-				p1.setHp(hp1++);
+				p1.setHp(p1.getHp() + 1);
 				lifes.remove(i);
 			}
 		}
@@ -184,7 +198,7 @@ public class Stage extends JPanel implements KeyListener, ActionListener {
 		for (int i=0; i<lifes.size(); i++) {
 			Rectangle r2 = lifes.get(i).getBounds();
 			if (r1.intersects(r2)) {
-				p2.setHp(hp1++);
+				p2.setHp(p2.getHp() + 1);
 				lifes.remove(i);
 			}
 		}
@@ -239,6 +253,7 @@ public class Stage extends JPanel implements KeyListener, ActionListener {
 			if (r1.intersects(r3)) {
 				m1.setActive(false);
 				p2.hit();
+				
 			}
 		}
 	}
@@ -316,10 +331,38 @@ public class Stage extends JPanel implements KeyListener, ActionListener {
 		// TODO Auto-generated method stub
 		gameLoop();
 	}
+	
+	
+	public int choseStageDialog(){
+		Object[] possibilities = {"1 - Pustynna burza", "2 - Wiezien labiryntu"};
+		String s = (String)JOptionPane.showInputDialog(
+		                    this,
+		                    "Wybierz mape:",
+		                    "Wybor mapy",
+		                    JOptionPane.PLAIN_MESSAGE,
+		                    null,
+		                    possibilities,
+		                    "1 - Pustynna burza");
+		
+			if(s.equals("1 - Pustynna burza")){
+				return 1;
+				
+				
+			}else if(s.equals("2 - Wiezien labiryntu")){
+				return 2;
+			}
+			else{
+				return 2;
+			}
+		
+	}
+	
 
 	public int createServerOrClient(int c) throws InterruptedException, ExecutionException, NumberFormatException, IOException {
 		if (c == 1) {
-			int chooseStage=1;//tutaj jakaœ interakcja co do wyboru stage'a, najlepiej w innej funkci zeby przejrzyscie bylo
+			int chooseStage = 2; // tu wystepuje Exception!
+			
+//			int chooseStage=2;//tutaj jakaœ interakcja co do wyboru stage'a, najlepiej w innej funkci zeby przejrzyscie bylo
 			p2 = new Player2("p2/playerDown.png", c);
 			cs = new ConnectionServer(p2, chooseStage);
 			p1 = new Player("p1/playerUp.png", cs.getServer());
@@ -366,6 +409,12 @@ public class Stage extends JPanel implements KeyListener, ActionListener {
 		blocks.clear();
 	}
 
+	public void setLifes(){
+		lifes.add(new Life("life.png", 5, 5));
+		lifes.add(new Life("life.png", 610, 425));
+		
+	}
+	
 	// mapa1, rozmiar brick to 20x20
 	public void setStage1() {
 		blocks.clear();
@@ -418,8 +467,8 @@ public class Stage extends JPanel implements KeyListener, ActionListener {
 		blocks.add(new Block("brick.png", 470, 330));
 		blocks.add(new Block("brick.png", 490, 330));
 		blocks.add(new Block("brick.png", 510, 330));
-
-		lifes.add(new Life("life.png", 0, 0));
+		setLifes();
+		
 	}
 
 	public void setStage2() {
@@ -465,7 +514,7 @@ public class Stage extends JPanel implements KeyListener, ActionListener {
 			x = x + 20;
 		}
 
-		lifes.add(new Life("life.png", 10, 10));
+		setLifes();
 
 	}
 
