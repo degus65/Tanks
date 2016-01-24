@@ -10,6 +10,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
 import javax.swing.ImageIcon;
@@ -48,6 +49,7 @@ public class Stage extends JPanel implements KeyListener, ActionListener {
 	private int hp1 = 0;
 	private int hp2 = 0;
 	boolean a = true;
+	
 
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -334,26 +336,17 @@ public class Stage extends JPanel implements KeyListener, ActionListener {
 	
 	
 	public int choseStageDialog(){
-		Object[] possibilities = {"1 - Pustynna burza", "2 - Wiezien labiryntu"};
-		String s = (String)JOptionPane.showInputDialog(
-		                    this,
-		                    "Wybierz mape:",
-		                    "Wybor mapy",
-		                    JOptionPane.PLAIN_MESSAGE,
-		                    null,
-		                    possibilities,
-		                    "1 - Pustynna burza");
 		
-			if(s.equals("1 - Pustynna burza")){
-				return 1;
-				
-				
-			}else if(s.equals("2 - Wiezien labiryntu")){
-				return 2;
-			}
-			else{
-				return 2;
-			}
+//		Panel1 sss = new Panel1();
+//		add(sss);
+//		StageChoice = sss.mapa;
+		Random generator = new Random();
+		int i = generator.nextInt(2) + 1;
+//		System.out.println("Stage: " + i);
+		
+		return i;
+		
+//		return 4;
 		
 	}
 	
@@ -397,6 +390,13 @@ public class Stage extends JPanel implements KeyListener, ActionListener {
 			setStage1();
 		else if(st==2)
 			setStage2();
+<<<<<<< HEAD
+=======
+		else if(st==3)
+			setStage3();
+		else if(st==4)
+			setStage4();
+>>>>>>> origin/master
 		
 		timer = new Timer(1000 / 60, (ActionListener) this);// 60 fps
 		timer.start();
@@ -411,12 +411,23 @@ public class Stage extends JPanel implements KeyListener, ActionListener {
 	public void setLifes(){
 		lifes.add(new Life("life.png", 5, 5));
 		lifes.add(new Life("life.png", 610, 425));
-		
 	}
+	
+	public void setLifes(int x, int y){
+		lifes.add(new Life("life.png", x, y));
+	}
+	
 	
 	// mapa1, rozmiar brick to 20x20
 	public void setStage1() {
 		blocks.clear();
+		
+		blocks.add(new Block("rock.png", 480, 180));
+		
+		blocks.add(new Block("brick2.png", 30, 360));
+		blocks.add(new Block("brick2.png", 30, 330));
+		blocks.add(new Block("brick2.png", 30, 300));
+		
 		blocks.add(new Block("brick.png", 310, 230));
 		blocks.add(new Block("brick.png", 290, 230));
 		blocks.add(new Block("brick.png", 270, 230));
@@ -513,8 +524,85 @@ public class Stage extends JPanel implements KeyListener, ActionListener {
 			x = x + 20;
 		}
 
+		
+		blocks.add(new Block("tankWreck2.png", 540, 120));
 		setLifes();
 
 	}
+	
+	
+	public void setStage3() {
+		blocks.clear();
+		int y =0;
+		int setX = 0;
+		
+		blocks.add(new Block("tankWreck1.png", 100, 200));
+		
+		y = 90;
+		setX = 260;
+		for (int i = 0; i <= 13; i++) {
+			blocks.add(new Block("brick.png", setX, y));
+			y = y + 20;
+		}
+		
+		y = 90;
+		setX = 350;
+		for (int i = 0; i <= 13; i++) {
+			blocks.add(new Block("brick.png", setX, y));
+			y = y + 20;
+		}
+
+		
+		y = 140;
+		setX = 80;
+		for (int i = 0; i <= 6; i++) {
+			blocks.add(new Block("brick.png", setX, y));
+			y = y + 20;
+			setX = setX + 20;
+		}
+		
+		y = 140;
+		setX = 420;
+		for (int i = 0; i <= 6; i++) {
+			blocks.add(new Block("brick.png", setX, y));
+			y = y + 20;
+			setX = setX + 20;
+		}
+
+		setLifes(140, 180);
+		setLifes(480, 220);
+
+	}
+	
+	public void setStage4() {
+		blocks.clear();
+
+		int y =0;
+		int x = 0;
+		
+		y = 80;
+		x = 20;
+		for (int i = 0; i <= 9; i++) {
+			blocks.add(new Block("brick.png", x, y));
+//			y = y +60;
+			x= x +81;
+		}
+
+		y = 360;
+		x = 20;
+		for (int i = 0; i <= 9; i++) {
+			blocks.add(new Block("brick2.png", x, y));
+//			y = y +60;
+			x= x +81;
+		}
+		
+
+		setLifes(60, 220);
+		setLifes(300, 220);
+		setLifes(480, 220);
+
+	}
+	
+
 
 }
