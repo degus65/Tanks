@@ -33,7 +33,7 @@ public class SpriteCache {
 	{
 		BufferedImage img=(BufferedImage) sprites.get(sciezka);
 		if (img==null) {
-			img=loadImage("img/" + sciezka);
+			img=loadImage("img/"+sciezka);
 			sprites.put(sciezka, img);
 		}
 		return img;

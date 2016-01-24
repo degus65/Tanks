@@ -10,7 +10,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
 import javax.swing.ImageIcon;
@@ -19,8 +18,10 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
 
+import Connection.ClientReceiver;
 import Connection.ConnectionClient;
 import Connection.ConnectionServer;
+import Connection.ServerSender;
 
 public class Stage extends JPanel implements KeyListener, ActionListener {
 
@@ -87,12 +88,31 @@ public class Stage extends JPanel implements KeyListener, ActionListener {
 				int dialogResult = JOptionPane.showConfirmDialog(this, "Nowa gra? Drugi gracz te¿ musi potwierdzic", "Nowa gra?", dialogButton);
 				if(dialogResult == 0) {
 				  //System.out.println("Yes option");
+					if(cc!=null)
+					{
+						ClientReceiver tempClient=cc.getClient();
+						tempClient.iWantAgain();
+						boolean accepted=false;
+						while(accepted==false)
+						{
+							accepted=tempClient.getAgain();
+						}
+					}	
+					else if(cs!=null)
+					{
+						ServerSender tempServer=cs.getServer();
+						tempServer.iWantAgain();
+						boolean accepted=false;
+						while(accepted==false)
+						{
+							accepted=tempServer.getAgain();
+						}
+					}
 					a=true;
 					endOfGame=false;
 					p1.startOver();
 					p2.startOver();
 					setLifes();
-					
 				} else {
 				  //System.out.println("No Option");
 				  System.exit(1);
@@ -167,23 +187,6 @@ public class Stage extends JPanel implements KeyListener, ActionListener {
 		}
 	}
 	
-	private void collisionP1withP2() {
-		Rectangle r1 = p1.getBounds();
-		Rectangle r2 = p2.getBounds();
-		if (r1.intersects(r2)) {//to nie dziala jeszcze
-//			if (r2.getMinY() <= r1.getMaxY())
-//				p2.setY((int) r2.getMinY() - p2.getHeight());
-//			else if (r2.getMaxY() >= r1.getMinY())
-//				p2.setY((int) r2.getMaxY());
-//
-//			else if (r2.getMaxX() >= r1.getMinX())
-//				p2.setX((int) r2.getMaxX());
-//
-//			else if (r2.getMinX() <= r1.getMaxX())
-//				p2.setX((int) r2.getMinX() - p2.getWidth());
-		}
-	}
-
 	private void collisionP1withLife() {
 		Rectangle r1 = p1.getBounds();
 		for (int i=0; i<lifes.size(); i++) {
@@ -284,8 +287,6 @@ public class Stage extends JPanel implements KeyListener, ActionListener {
 
 		collisionP1withLife();
 		collisionP2withLife();
-		
-		collisionP1withP2();
 	}
 
 	// tlo
@@ -333,33 +334,14 @@ public class Stage extends JPanel implements KeyListener, ActionListener {
 		// TODO Auto-generated method stub
 		gameLoop();
 	}
-	
-	
-	public int choseStageDialog(){
-		
-//		Panel1 sss = new Panel1();
-//		add(sss);
-//		StageChoice = sss.mapa;
-		Random generator = new Random();
-		int i = generator.nextInt(2) + 1;
-//		System.out.println("Stage: " + i);
-		
-		return i;
-		
-//		return 4;
-		
-	}
-	
 
-	public int createServerOrClient(int c) throws InterruptedException, ExecutionException, NumberFormatException, IOException {
+	public int createServerOrClient(int c, int stage) throws InterruptedException, ExecutionException, NumberFormatException, IOException {
 		if (c == 1) {
-			int chooseStage=0;
-			chooseStage=choseStageDialog(); // tu wystepuje Exception!
 //			int chooseStage=2;//tutaj jakaœ interakcja co do wyboru stage'a, najlepiej w innej funkci zeby przejrzyscie bylo
 			p2 = new Player2("p2/playerDown.png", c);
-			cs = new ConnectionServer(p2, chooseStage);
+			cs = new ConnectionServer(p2, stage);
 			p1 = new Player("p1/playerUp.png", cs.getServer());
-			return chooseStage;
+			return stage;
 		}
 		else if (c == 2) {
 			p2 = new Player2("p1/playerUp.png", c);
@@ -376,7 +358,7 @@ public class Stage extends JPanel implements KeyListener, ActionListener {
 		return 0;
 	}
 
-	Stage(int c) throws InterruptedException, ExecutionException, NumberFormatException, IOException {
+	Stage(int c, int stage) throws InterruptedException, ExecutionException, NumberFormatException, IOException {
 
 		setBorder(new EmptyBorder(5, 5, 5, 5));
 		setLayout(new BorderLayout(0, 0));
@@ -384,19 +366,17 @@ public class Stage extends JPanel implements KeyListener, ActionListener {
 		setFocusable(true);
 		addKeyListener(this);
 
-		int st=createServerOrClient(c);
+		int st=createServerOrClient(c, stage);
 			
 		if(st==1)
 			setStage1();
 		else if(st==2)
 			setStage2();
-<<<<<<< HEAD
-=======
 		else if(st==3)
 			setStage3();
 		else if(st==4)
 			setStage4();
->>>>>>> origin/master
+
 		
 		timer = new Timer(1000 / 60, (ActionListener) this);// 60 fps
 		timer.start();

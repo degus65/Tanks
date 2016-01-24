@@ -79,6 +79,12 @@ public class ClientReceiver implements Callable<Boolean> {
 			return false;
 	}
 	
+	public void iWantAgain()
+	{
+		FutureTask<Boolean> ag=new FutureTask<Boolean>(new OnceAgain(out));
+		exec.submit(ag);
+	}
+	
 	public Boolean call() throws IOException {
 		// TODO Auto-generated method stub
 		String strLine="";

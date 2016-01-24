@@ -33,10 +33,10 @@ public class Missile extends Sprite {
 		if (y < 0) {
 			active=false;
 		}
-		if (x > 603) {
+		if (x > Stage.SZEROKOSC) {
 			active=false;
 		}
-		if (y > 423) {
+		if (y > Stage.WYSOKOSC) {
 			active=false;
 		}
 	}

@@ -63,6 +63,12 @@ public class ServerSender implements Callable<Boolean> {
 		exec.submit(st);
 	}
 	
+	public void iWantAgain()
+	{
+		FutureTask<Boolean> ag=new FutureTask<Boolean>(new OnceAgain(out));
+		exec.submit(ag);
+	}
+	
 	public boolean getAgain()
 	{
 		if(again==true)
@@ -109,7 +115,7 @@ public class ServerSender implements Callable<Boolean> {
 				}
 				else if(strLine.equalsIgnoreCase("AGAIN"))
 				{
-					
+					again=true;
 				}
 			}
 		}

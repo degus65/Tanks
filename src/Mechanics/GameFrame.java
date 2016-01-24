@@ -3,6 +3,7 @@ package Mechanics;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
@@ -57,6 +58,30 @@ public class GameFrame extends JFrame {
 			}
 		});
 	}
+	public int chooseStage()
+	{
+		Object[] possibilities = {"1 - Pustynna burza", "2 - Wiezien labiryntu", "3 - Autostrada smierci", "4 - Iracki kociol"};
+		String s = (String)JOptionPane.showInputDialog(
+		                    this,
+		                    "Wybierz mape:",
+		                    "Wybor mapy",
+		                    JOptionPane.PLAIN_MESSAGE,
+		                    null,
+		                    possibilities,
+		                    "1 - Pustynna burza");
+		
+			if(s.equals("1 - Pustynna burza")){
+				return 1;
+			}else if(s.equals("2 - Wiezien labiryntu")){
+				return 2;
+			}
+			else if(s.equals("3 - Autostrada smierci")){
+				return 3;
+				}
+			else
+					return 4;
+	}
+	
 
 	/**
 	 * Create the frame.
@@ -79,10 +104,11 @@ public class GameFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				
 				ipAdress = textFieldIP.getText();
+				int x=chooseStage();
 				//JOptionPane.showMessageDialog(contentPane, "Oczekiwanie na klienta", "Serwer", JOptionPane.INFORMATION_MESSAGE, null);
 				contentPane.setVisible(false);
 				try {
-					contentPaneStage = new Stage(1);//gdy 1 tworzymy serwer
+					contentPaneStage = new Stage(1, x);//gdy 1 tworzymy serwer
 				} catch (InterruptedException | ExecutionException | NumberFormatException | IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -105,7 +131,7 @@ public class GameFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				contentPane.setVisible(false);
 				try {
-					contentPaneStage = new Stage(2);//gdy 2 tworzymy klienta
+					contentPaneStage = new Stage(2, 0);//gdy 2 tworzymy klienta
 				} catch (InterruptedException | ExecutionException | NumberFormatException | IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
