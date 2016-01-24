@@ -187,35 +187,6 @@ public class Stage extends JPanel implements KeyListener, ActionListener {
 		}
 	}
 	
-<<<<<<< HEAD
-=======
-	private void collisionP1withP2() {
-		Rectangle r1 = p1.getBounds();
-		Rectangle r2 = p2.getBounds();
-		if (r1.intersects(r2)) {
-			if (r2.getMinY() <= r1.getMaxY() && p2.direction == Direction.DOWN)
-				p2.setY((int) r2.getMinY() - p2.getHeight());
-			else if (r2.getMaxY() >= r1.getMinY() && p2.direction == Direction.UP)
-				p2.setY((int) r2.getMaxY());
-			else if (r2.getMaxX() >= r1.getMinX() && p2.direction == Direction.LEFT)
-				p2.setX((int) r2.getMaxX());
-			else if (r2.getMinX() <= r1.getMaxX() && p2.direction == Direction.RIGHT)
-				p2.setX((int) r2.getMinX() - p2.getWidth());
-		}
-			if (r1.intersects(r2)) {
-				if (r2.getMinY() <= r1.getMaxY() && p1.direction == Direction.DOWN)
-					p1.setY((int) r2.getMinY() - p1.getHeight());
-				else if (r2.getMaxY() >= r1.getMinY() && p1.direction == Direction.UP)
-					p1.setY((int) r2.getMaxY());
-				else if (r2.getMaxX() >= r1.getMinX() && p1.direction == Direction.LEFT)
-					p1.setX((int) r2.getMaxX());
-				else if (r2.getMinX() <= r1.getMaxX() && p1.direction == Direction.RIGHT)
-					p1.setX((int) r2.getMinX() - p1.getWidth());
-			
-		}
-	}
-
->>>>>>> origin/master
 	private void collisionP1withLife() {
 		Rectangle r1 = p1.getBounds();
 		for (int i=0; i<lifes.size(); i++) {
