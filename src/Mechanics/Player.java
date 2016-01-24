@@ -7,7 +7,7 @@ import Connection.ClientReceiver;
 import Connection.ServerSender;
 
 public class Player extends Sprite {
-	private static final int PLAYER_SPEED = 5;
+	private static final int PLAYER_SPEED = 4;
 	private boolean up = false, down = false, left = false, right = false;
 	private ArrayList<Missile> missiles=new ArrayList<Missile>();
 	Direction direction;

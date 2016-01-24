@@ -7,6 +7,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 public class Panel1 extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -122057931156254079L;
 	private JTextField textField;
 	public int mapa = 2;
 

@@ -19,8 +19,10 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
 
+import Connection.ClientReceiver;
 import Connection.ConnectionClient;
 import Connection.ConnectionServer;
+import Connection.ServerSender;
 
 public class Stage extends JPanel implements KeyListener, ActionListener {
 
@@ -87,12 +89,31 @@ public class Stage extends JPanel implements KeyListener, ActionListener {
 				int dialogResult = JOptionPane.showConfirmDialog(this, "Nowa gra? Drugi gracz te¿ musi potwierdzic", "Nowa gra?", dialogButton);
 				if(dialogResult == 0) {
 				  //System.out.println("Yes option");
+					if(cc!=null)
+					{
+						ClientReceiver tempClient=cc.getClient();
+						tempClient.iWantAgain();
+						boolean accepted=false;
+						while(accepted==false)
+						{
+							accepted=tempClient.getAgain();
+						}
+					}	
+					else if(cs!=null)
+					{
+						ServerSender tempServer=cs.getServer();
+						tempServer.iWantAgain();
+						boolean accepted=false;
+						while(accepted==false)
+						{
+							accepted=tempServer.getAgain();
+						}
+					}
 					a=true;
 					endOfGame=false;
 					p1.startOver();
 					p2.startOver();
 					setLifes();
-					
 				} else {
 				  //System.out.println("No Option");
 				  System.exit(1);
@@ -170,17 +191,26 @@ public class Stage extends JPanel implements KeyListener, ActionListener {
 	private void collisionP1withP2() {
 		Rectangle r1 = p1.getBounds();
 		Rectangle r2 = p2.getBounds();
-		if (r1.intersects(r2)) {//to nie dziala jeszcze
-//			if (r2.getMinY() <= r1.getMaxY())
-//				p2.setY((int) r2.getMinY() - p2.getHeight());
-//			else if (r2.getMaxY() >= r1.getMinY())
-//				p2.setY((int) r2.getMaxY());
-//
-//			else if (r2.getMaxX() >= r1.getMinX())
-//				p2.setX((int) r2.getMaxX());
-//
-//			else if (r2.getMinX() <= r1.getMaxX())
-//				p2.setX((int) r2.getMinX() - p2.getWidth());
+		if (r1.intersects(r2)) {
+			if (r2.getMinY() <= r1.getMaxY() && p2.direction == Direction.DOWN)
+				p2.setY((int) r2.getMinY() - p2.getHeight());
+			else if (r2.getMaxY() >= r1.getMinY() && p2.direction == Direction.UP)
+				p2.setY((int) r2.getMaxY());
+			else if (r2.getMaxX() >= r1.getMinX() && p2.direction == Direction.LEFT)
+				p2.setX((int) r2.getMaxX());
+			else if (r2.getMinX() <= r1.getMaxX() && p2.direction == Direction.RIGHT)
+				p2.setX((int) r2.getMinX() - p2.getWidth());
+		}
+			if (r1.intersects(r2)) {
+				if (r2.getMinY() <= r1.getMaxY() && p1.direction == Direction.DOWN)
+					p1.setY((int) r2.getMinY() - p1.getHeight());
+				else if (r2.getMaxY() >= r1.getMinY() && p1.direction == Direction.UP)
+					p1.setY((int) r2.getMaxY());
+				else if (r2.getMaxX() >= r1.getMinX() && p1.direction == Direction.LEFT)
+					p1.setX((int) r2.getMaxX());
+				else if (r2.getMinX() <= r1.getMaxX() && p1.direction == Direction.RIGHT)
+					p1.setX((int) r2.getMinX() - p1.getWidth());
+			
 		}
 	}
 
@@ -394,6 +424,7 @@ public class Stage extends JPanel implements KeyListener, ActionListener {
 			setStage3();
 		else if(st==4)
 			setStage4();
+
 		
 		timer = new Timer(1000 / 60, (ActionListener) this);// 60 fps
 		timer.start();

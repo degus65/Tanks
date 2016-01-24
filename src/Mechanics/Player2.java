@@ -17,12 +17,12 @@ public class Player2 extends Sprite {
 		if(mode==1)
 		{
 			x=301; y=100; vX=0; vY=0;
-			direction=Direction.DOWN;
+			direction=Direction.UP;
 		}
 		else if(mode==2)
 		{
 			x=301; y=400; vX=0; vY=0;
-			direction=Direction.UP;
+			direction=Direction.DOWN;
 		}
 		this.mode=mode;
 			
@@ -44,12 +44,12 @@ public class Player2 extends Sprite {
 	{
 		if(mode==1)
 		{
-			x=301; y=400; vX=0; vY=0;
+			x=301; y=100; vX=0; vY=0;
 			this.setSciezka("playerUp.png");
 		}	
 		else if(mode==2)
 		{
-			x=301; y=100; vX=0; vY=0;
+			x=301; y=400; vX=0; vY=0;
 			this.setSciezka("playerDown.png");
 		}
 		hp=5;
