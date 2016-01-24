@@ -26,6 +26,7 @@ public class ClientReceiver implements Callable<Boolean> {
 	ExecutorService exec;
 	private String adress  = GameFrame.ipAdress;
 	private int stage=0;
+	private boolean again=false;
 	
 	public ClientReceiver(Player2 p2) {
 		
@@ -67,6 +68,17 @@ public class ClientReceiver implements Callable<Boolean> {
 		return stage;
 	}
 	
+	public boolean getAgain()
+	{
+		if(again==true)
+		{
+			again=false;
+			return true;
+		}
+		else
+			return false;
+	}
+	
 	public Boolean call() throws IOException {
 		// TODO Auto-generated method stub
 		String strLine="";
@@ -100,6 +112,10 @@ public class ClientReceiver implements Callable<Boolean> {
 					strLine = in.readLine();
 					int s=Integer.parseInt(strLine);
 					stage=s;
+				}
+				else if(strLine.equalsIgnoreCase("AGAIN"))
+				{
+					again=true;
 				}
 			}
 		}

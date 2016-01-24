@@ -84,7 +84,7 @@ public class Stage extends JPanel implements KeyListener, ActionListener {
 				int dialogButton = JOptionPane.YES_NO_OPTION;
 				int dialogResult = JOptionPane.showConfirmDialog(this, "Nowa gra? Drugi gracz te¿ musi potwierdzic", "Nowa gra?", dialogButton);
 				if(dialogResult == 0) {
-				  System.out.println("Yes option");
+				  //System.out.println("Yes option");
 					a=true;
 					endOfGame=false;
 					p1.startOver();
@@ -92,7 +92,7 @@ public class Stage extends JPanel implements KeyListener, ActionListener {
 					setLifes();
 					
 				} else {
-				  System.out.println("No Option");
+				  //System.out.println("No Option");
 				  System.exit(1);
 				} 
 			}
@@ -360,8 +360,8 @@ public class Stage extends JPanel implements KeyListener, ActionListener {
 
 	public int createServerOrClient(int c) throws InterruptedException, ExecutionException, NumberFormatException, IOException {
 		if (c == 1) {
-			int chooseStage = 2; // tu wystepuje Exception!
-			
+			int chooseStage=0;
+			chooseStage=choseStageDialog(); // tu wystepuje Exception!
 //			int chooseStage=2;//tutaj jakaœ interakcja co do wyboru stage'a, najlepiej w innej funkci zeby przejrzyscie bylo
 			p2 = new Player2("p2/playerDown.png", c);
 			cs = new ConnectionServer(p2, chooseStage);
@@ -388,20 +388,19 @@ public class Stage extends JPanel implements KeyListener, ActionListener {
 		setBorder(new EmptyBorder(5, 5, 5, 5));
 		setLayout(new BorderLayout(0, 0));
 
-		timer = new Timer(1000 / 60, (ActionListener) this);// 60 fps
-		timer.start();
-
 		setFocusable(true);
 		addKeyListener(this);
 
-		
-		
 		int st=createServerOrClient(c);
-		
+			
 		if(st==1)
 			setStage1();
 		else if(st==2)
 			setStage2();
+		
+		timer = new Timer(1000 / 60, (ActionListener) this);// 60 fps
+		timer.start();
+		
 	}
 
 	// pusta mapa

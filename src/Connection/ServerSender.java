@@ -24,6 +24,7 @@ public class ServerSender implements Callable<Boolean> {
 	private ExecutorService exec = Executors.newFixedThreadPool(5);
 	private int stage;
 	private boolean gameStart;
+	private boolean again;
 	
 	ServerSender(Player2 p2, Socket g, int s)
 	{
@@ -62,6 +63,17 @@ public class ServerSender implements Callable<Boolean> {
 		exec.submit(st);
 	}
 	
+	public boolean getAgain()
+	{
+		if(again==true)
+		{
+			again=false;
+			return true;
+		}
+		else
+			return false;
+	}
+	
 	public Boolean call() throws InterruptedException, ExecutionException, NumberFormatException, IOException
 	{
 		establishWriterAndReader();
@@ -94,6 +106,10 @@ public class ServerSender implements Callable<Boolean> {
 					p2.setX(x);
 					p2.setY(y);
 					p2.setDirection(d);
+				}
+				else if(strLine.equalsIgnoreCase("AGAIN"))
+				{
+					
 				}
 			}
 		}
